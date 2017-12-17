@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2017/12/15 21:15:33 by eLopez           ###   ########.fr       */
+/*   Updated: 2017/12/16 23:41:35 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,5 +136,10 @@ double  findinterplane(t_ray ray, t_vert norm);
 double  findintersphere(t_ray ray, t_sphere sphere);
 t_vert	sphere_norm(t_sphere sphere, t_vert point);
 void	scene(t_rtv1 *rt);
+double  brightness(t_rgb color);
+t_rgb   colorscalar(t_rgb color, double scalar);
+t_rgb   coloradd(t_rgb clr1, t_rgb clr2);
+t_rgb   colormult(t_rgb clr1, t_rgb clr2);
+t_rgb   coloravg(t_rgb clr1, t_rgb clr2);
 
 #endif
