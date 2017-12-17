@@ -85,7 +85,6 @@ void	scene(t_rtv1 *rt)
 				putpixel(rt, x, y, 0x007f7f7f);
 			else
 				putpixel(rt, x, y, 0x0000ff00);
-			ft_printf("%d\n", index);
 		}
 	}
 }
