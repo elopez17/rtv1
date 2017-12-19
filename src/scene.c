@@ -49,8 +49,8 @@ void	scene(t_rtv1 *rt)
 	sphere.pos = (t_vert){0, 0, 0};
 	sphere.radius = 1;
 	sphere.clr = (t_rgb){0x0, 0xff, 0x0};
-	plane.norm = (t_vert){0, 1, 1};
-	plane.dist = -1;
+	plane.norm = (t_vert){0, 1, 0};
+	plane.dist = -3;
 	plane.clr = (t_rgb){0x7f, 0x7f, 0x7f};
 	y = -1;
 	while(++y < rt->w.height)
@@ -76,7 +76,7 @@ void	scene(t_rtv1 *rt)
 			}
 			ray.origin = rt->cam.pos;
 			ray.dir = normalize(add_vert(rt->cam.dir, add_vert(mult_vert(rt->cam.right, xamt - 0.5), mult_vert(rt->cam.down, yamt - 0.5))));
-			intersect[0] = findinterplane(ray, plane.norm);
+			intersect[0] = findinterplane(ray, plane);
 			intersect[1] = findintersphere(ray, sphere);
 			index = winningobject(intersect);
 			if (index == -1)

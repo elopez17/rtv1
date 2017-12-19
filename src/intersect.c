@@ -1,16 +1,16 @@
 #include <rtv1.h>
 
-double	findinterplane(t_ray ray, t_vert norm)
+double	findinterplane(t_ray ray, t_plane plane)
 {
 	double	a;
 	double	b;
 
-	a = dot_prod(ray.dir, norm);
+	a = dot_prod(ray.dir, plane.norm);
 	if (a == 0)
 		return (-1);
 	else
 	{
-		b = dot_prod(norm, add_vert(ray.origin, invert(mult_vert(norm, a))));
+		b = dot_prod(plane.norm, add_vert(ray.origin, invert(mult_vert(plane.norm, plane.dist))));
 		return (-1 * b / a);
 	}
 }

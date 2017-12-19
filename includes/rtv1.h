@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2017/12/16 23:41:35 by eLopez           ###   ########.fr       */
+/*   Updated: 2017/12/18 14:33:05 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ typedef struct	s_rtv1
 	int		len;
 	int		endian;
 	char	*addr;
+	int		fd;
 	t_cam	cam;
 }				t_rtv1;
 
@@ -132,7 +133,7 @@ t_vert  cross_prod(t_vert v1, t_vert v2);
 t_vert  add_vert(t_vert v1, t_vert v2);
 t_vert  mult_vert(t_vert v, double scalar);
 t_vert  diff_vert(t_vert v1, t_vert v2);
-double  findinterplane(t_ray ray, t_vert norm);
+double  findinterplane(t_ray ray, t_plane plane);
 double  findintersphere(t_ray ray, t_sphere sphere);
 t_vert	sphere_norm(t_sphere sphere, t_vert point);
 void	scene(t_rtv1 *rt);
@@ -141,5 +142,7 @@ t_rgb   colorscalar(t_rgb color, double scalar);
 t_rgb   coloradd(t_rgb clr1, t_rgb clr2);
 t_rgb   colormult(t_rgb clr1, t_rgb clr2);
 t_rgb   coloravg(t_rgb clr1, t_rgb clr2);
+void    rtv1_error(int code);
+void	parsefile(t_rtv1 *rt);
 
 #endif
