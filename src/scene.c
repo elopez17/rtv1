@@ -1,32 +1,30 @@
 #include <rtv1.h>
 
-static int	winningobject(double *intersects)
+static int	winningobject(double *intersects, int nodes)
 {
 	double	max;
+	int		i;
+	int		index;
 
-	if (intersects[0] == -1 && intersects[1] == -1)
+	i = -1;
+	max = 0;
+	index = 0;
+	if (nodes == 0)
 		return (-1);
-	else if (intersects[0] == -1 && intersects[1] > 0)
+	while (++i < nodes)
+		if (intersects[i] > max)
+			max = intersects[i];
+	if (max > 0)
 	{
-		return (1);
+		while (--i >= 0)
+			if (intersects[i] > 0 && intersects[i] <= max)
+			{
+				max = intersects[i];
+				index = i;
+			}
+		return (index);
 	}
-	else if (intersects[1] == -1 && intersects[0] > 0)
-	{
-		return (0);
-	}
-	else
-	{
-		max = intersects[0] > intersects[1] ? intersects[0]: intersects[1];
-		if (max > 0)
-		{
-			if (intersects[0] > 0 && intersects[0] <= intersects[1])
-				return (0);
-			else
-				return (1);
-		}
-		else
-			return (-1);
-	}
+	return (-1);
 }
 
 void	scene(t_rtv1 *rt)
@@ -68,7 +66,7 @@ void	scene(t_rtv1 *rt)
 			ray.origin = rt->cam.pos;
 			ray.dir = normalize(add_vert(rt->cam.dir, add_vert(mult_vert(rt->cam.right, xamt - 0.5), mult_vert(rt->cam.down, yamt - 0.5))));
 			intersects = findintersects(ray, rt);
-			index = winningobject(intersects);
+			index = winningobject(intersects, rt->nodes);
 			ft_memdel((void**)&intersects);
 			if (index == -1)
 				putpixel(rt, x, y, 0x0);
