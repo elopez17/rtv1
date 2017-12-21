@@ -1,5 +1,25 @@
 #include <rtv1.h>
 
+static t_rgb	color_at(int index, t_obj *objects)
+{
+	t_obj	*tmp;
+
+	if (index == -1)
+		return ((t_rgb){0, 0, 0});
+	tmp = objects;
+	while (--index >= 0)
+		tmp = tmp->next;
+	if (tmp->type == 1)
+		return (tmp->u.sphere.clr);
+	else if (tmp->type == 2)
+		return (tmp->u.plane.clr);
+	else if (tmp->type == 3)
+		;//return (tmp->u.cone.clr);
+	else
+		;//return (tmp->u.cylinder.clr);
+	return ((t_rgb){0, 0, 0});
+}
+
 static int	winningobject(double *intersects, int nodes)
 {
 	double	max;
@@ -67,13 +87,8 @@ void	scene(t_rtv1 *rt)
 			ray.dir = normalize(add_vert(rt->cam.dir, add_vert(mult_vert(rt->cam.right, xamt - 0.5), mult_vert(rt->cam.down, yamt - 0.5))));
 			intersects = findintersects(ray, rt);
 			index = winningobject(intersects, rt->nodes);
+			putpixel(rt, x, y, color_at(index, rt->obj));
 			ft_memdel((void**)&intersects);
-			if (index == -1)
-				putpixel(rt, x, y, 0x0);
-			else if (index == 0)
-				putpixel(rt, x, y, 0x007f7f7f);
-			else
-				putpixel(rt, x, y, 0x0000ff00);
 		}
 	}
 }
