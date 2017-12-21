@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2017/12/18 14:33:05 by eLopez           ###   ########.fr       */
+/*   Updated: 2017/12/20 16:19:40 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,14 +96,18 @@ typedef struct	s_camera
 	t_vert	look_at;
 }				t_cam;
 
-typedef struct	s_object
+typedef union	u_union
 {
-	int				type;
-	double			size;
-	t_vert			pos;
-	t_vert			rot;
-	t_rgb			clr;
-	struct s_object	*next;
+	t_sphere	sphere;
+	t_plane		plane;
+	t_light		light;
+}				t_union;
+
+typedef struct	s_objects
+{
+	int					type;
+	t_union				u;
+	struct s_objects	*next;
 }				t_obj;
 
 typedef struct	s_rtv1
@@ -118,31 +122,41 @@ typedef struct	s_rtv1
 	char	*addr;
 	int		fd;
 	t_cam	cam;
+	t_obj	*obj;
 }				t_rtv1;
 
-void	render(t_rtv1 *rt);
-void	drawline(t_rtv1 *rt, t_vert *a, t_vert *b, int color);
-void	putpixel(t_rtv1 *rt, int x, int y, int color);
-int		key_hook(int key, t_rtv1 **rt);
-int		close_hook(t_rtv1 **rt);
-int		expose_hook(t_rtv1 **rt);
-t_vert  normalize(t_vert v);
-t_vert  invert(t_vert v);
-double  dot_prod(t_vert v1, t_vert v2);
-t_vert  cross_prod(t_vert v1, t_vert v2);
-t_vert  add_vert(t_vert v1, t_vert v2);
-t_vert  mult_vert(t_vert v, double scalar);
-t_vert  diff_vert(t_vert v1, t_vert v2);
-double  findinterplane(t_ray ray, t_plane plane);
-double  findintersphere(t_ray ray, t_sphere sphere);
-t_vert	sphere_norm(t_sphere sphere, t_vert point);
-void	scene(t_rtv1 *rt);
-double  brightness(t_rgb color);
-t_rgb   colorscalar(t_rgb color, double scalar);
-t_rgb   coloradd(t_rgb clr1, t_rgb clr2);
-t_rgb   colormult(t_rgb clr1, t_rgb clr2);
-t_rgb   coloravg(t_rgb clr1, t_rgb clr2);
-void    rtv1_error(int code);
-void	parsefile(t_rtv1 *rt);
+void		render(t_rtv1 *rt);
+void		drawline(t_rtv1 *rt, t_vert *a, t_vert *b, int color);
+void		putpixel(t_rtv1 *rt, int x, int y, int color);
+int			key_hook(int key, t_rtv1 **rt);
+int			close_hook(t_rtv1 **rt);
+int			expose_hook(t_rtv1 **rt);
+t_vert		normalize(t_vert v);
+t_vert		invert(t_vert v);
+double		dot_prod(t_vert v1, t_vert v2);
+t_vert		cross_prod(t_vert v1, t_vert v2);
+t_vert		add_vert(t_vert v1, t_vert v2);
+t_vert		mult_vert(t_vert v, double scalar);
+t_vert		diff_vert(t_vert v1, t_vert v2);
+double		findinterplane(t_ray ray, t_plane plane);
+double		findintersphere(t_ray ray, t_sphere sphere);
+t_vert		sphere_norm(t_sphere sphere, t_vert point);
+void		scene(t_rtv1 *rt);
+double		brightness(t_rgb color);
+t_rgb		colorscalar(t_rgb color, double scalar);
+t_rgb		coloradd(t_rgb clr1, t_rgb clr2);
+t_rgb		colormult(t_rgb clr1, t_rgb clr2);
+t_rgb		coloravg(t_rgb clr1, t_rgb clr2);
+void		rtv1_error(int code);
+void		parsefile(t_rtv1 *rt);
+t_vert		getxyz(const char *line);
+t_rgb		getcolor(const char *line);
+void		getcam(t_rtv1 *rt);
+t_union		getsphere(t_rtv1 *rt);
+t_union		getplane(t_rtv1 *rt);
+void		getcone(t_rtv1 *rt);
+void		getcylinder(t_rtv1 *rt);
+t_obj		getobject(int type, t_union u);
+
 
 #endif
