@@ -47,12 +47,29 @@ static int	winningobject(double *intersects, int nodes)
 	return (-1);
 }
 
+static void	setxy(t_rtv1 *rt, t_xy *dir, t_xy *pixel)
+{
+	if (rt->w.width > rt->w.height)
+	{
+		dir->x = ((pixel->x + 0.5) / rt->w.width) * rt->asp_ratio - (((rt->w.width - rt->w.height) / (double)rt->w.height) / 2);
+		dir->y = ((rt->w.height - pixel->y) + 0.5) / rt->w.height;
+	}
+	else if (rt->w.height > rt->w.width)
+	{
+		dir->x = (pixel->x + 0.5) / rt->w.width;
+		dir->y = (((rt->w.height - pixel->y) + 0.5) / rt->w.height) / rt->asp_ratio - (((rt->w.height - rt->w.width) / (double)rt->w.width) / 2);
+	}
+	else
+	{
+		dir->x = (pixel->x + 0.5) / rt->w.width;
+		dir->y = ((rt->w.height - pixel->y) + 0.5) / rt->w.height;
+	}
+}
+
 void	scene(t_rtv1 *rt)
 {
-	double		x;
-	double		y;
-	double		xamt;
-	double		yamt;
+	t_xy		pixel;
+	t_xy		dir;
 	int			this;
 	t_ray		ray;
 	t_light		light;
@@ -61,33 +78,19 @@ void	scene(t_rtv1 *rt)
 
 	light.pos = (t_vert){-7, 10, -10};
 	light.clr = (t_rgb){0xff, 0xff, 0xff};
-	y = -1;
-	while(++y < rt->w.height)
+	pixel.y = -1;
+	while(++pixel.y < rt->w.height)
 	{
-		x = -1;
-		while(++x < rt->w.width)
+		pixel.x = -1;
+		while(++pixel.x < rt->w.width)
 		{
-			this = y * rt->w.width + x;
-			if (rt->w.width > rt->w.height)
-			{
-				xamt = ((x + 0.5) / rt->w.width) * rt->asp_ratio - (((rt->w.width - rt->w.height) / (double)rt->w.height) / 2);
-				yamt = ((rt->w.height - y) + 0.5) / rt->w.height;
-			}
-			else if (rt->w.height > rt->w.width)
-			{
-				xamt = (x + 0.5) / rt->w.width;
-				yamt = (((rt->w.height - y) + 0.5) / rt->w.height) / rt->asp_ratio - (((rt->w.height - rt->w.width) / (double)rt->w.width) / 2);
-			}
-			else
-			{
-				xamt = (x + 0.5) / rt->w.width;
-				yamt = ((rt->w.height - y) + 0.5) / rt->w.height;
-			}
+			this = pixel.y * rt->w.width + pixel.x;
+			setxy(rt, &dir, &pixel);
 			ray.origin = rt->cam.pos;
-			ray.dir = normalize(add_vert(rt->cam.dir, add_vert(mult_vert(rt->cam.right, xamt - 0.5), mult_vert(rt->cam.down, yamt - 0.5))));
+			ray.dir = normalize(add_vert(rt->cam.dir, add_vert(mult_vert(rt->cam.right, dir.x - 0.5), mult_vert(rt->cam.down, dir.y - 0.5))));
 			intersects = findintersects(ray, rt);
 			index = winningobject(intersects, rt->nodes);
-			putpixel(rt, x, y, color_at(index, rt->obj));
+			putpixel(rt, pixel.x, pixel.y, color_at(index, rt->obj));
 			ft_memdel((void**)&intersects);
 		}
 	}

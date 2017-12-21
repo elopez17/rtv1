@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2017/12/21 11:50:53 by eLopez           ###   ########.fr       */
+/*   Updated: 2017/12/21 12:42:20 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ typedef struct	s_dimensions
 	int		width;
 	int		height;
 }				t_dim;
+
+typedef struct	s_xy
+{
+	double	x;
+	double	y;
+}				t_xy;
 
 typedef struct	s_vertex
 {
@@ -128,7 +134,7 @@ typedef struct	s_rtv1
 }				t_rtv1;
 
 void		render(t_rtv1 *rt);
-void		drawline(t_rtv1 *rt, t_vert *a, t_vert *b, int color);
+void		drawline(t_rtv1 *rt, t_vert *a, t_vert *b, t_rgb color);
 void		putpixel(t_rtv1 *rt, int x, int y, t_rgb color);
 int			key_hook(int key, t_rtv1 **rt);
 int			close_hook(t_rtv1 **rt);

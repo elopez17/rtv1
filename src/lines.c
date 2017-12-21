@@ -6,13 +6,13 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 11:40:22 by eLopez            #+#    #+#             */
-/*   Updated: 2017/12/14 11:02:40 by eLopez           ###   ########.fr       */
+/*   Updated: 2017/12/21 12:41:59 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <rtv1.h>
 
-static void	straight(t_rtv1 *rt, t_vert a, t_vert b, int color)
+static void	straight(t_rtv1 *rt, t_vert a, t_vert b, t_rgb color)
 {
 	int	route;
 
@@ -36,7 +36,7 @@ static void	straight(t_rtv1 *rt, t_vert a, t_vert b, int color)
 	}
 }
 
-static void	diagonal_x(t_rtv1 *rt, t_vert a, t_vert b, int color)
+static void	diagonal_x(t_rtv1 *rt, t_vert a, t_vert b, t_rgb color)
 {
 	float	slope;
 	float	trunc;
@@ -52,7 +52,7 @@ static void	diagonal_x(t_rtv1 *rt, t_vert a, t_vert b, int color)
 	}
 }
 
-static void	diagonal_y(t_rtv1 *rt, t_vert a, t_vert b, int color)
+static void	diagonal_y(t_rtv1 *rt, t_vert a, t_vert b, t_rgb color)
 {
 	float	slope;
 	float	trunc;
@@ -68,7 +68,7 @@ static void	diagonal_y(t_rtv1 *rt, t_vert a, t_vert b, int color)
 	}
 }
 
-void	drawline(t_rtv1 *rt, t_vert *a, t_vert *b, int color)
+void	drawline(t_rtv1 *rt, t_vert *a, t_vert *b, t_rgb color)
 {
 	if (a->x == b->x || a->y == b->y)
 		straight(rt, *a, *b, color);
