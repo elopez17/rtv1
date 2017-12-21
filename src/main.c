@@ -7,13 +7,15 @@ static void	init_rtv1(t_rtv1 **rt, char *file)
 	(*rt)->mlx = mlx_init();
 	(*rt)->w.width = 800;
 	(*rt)->w.height = 800;
+	(*rt)->asp_ratio = (double)(*rt)->w.width /(double)(*rt)->w.height;
 	(*rt)->win = mlx_new_window((*rt)->mlx, (*rt)->w.width, (*rt)->w.height,
 										"elopez & oabdalha @ 42");
 	(*rt)->img = mlx_new_image((*rt)->mlx, (*rt)->w.width, (*rt)->w.height);
 	(*rt)->addr = mlx_get_data_addr((*rt)->img, &((*rt)->bpp), &((*rt)->len),
 													&((*rt)->endian));
 	(*rt)->obj = (t_obj*)NULL;
-	(*rt)->cam.pos = (t_vert){3, 1.5, -4};
+	(*rt)->nodes = 0;
+	(*rt)->cam.pos = (t_vert){0, 0, 0};
 	(*rt)->cam.dir = (t_vert){0, 0, 0};
 	(*rt)->cam.right = (t_vert){0, 0, 0};
 	(*rt)->cam.down = (t_vert){0, 0, 0};

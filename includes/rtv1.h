@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2017/12/20 16:19:40 by eLopez           ###   ########.fr       */
+/*   Updated: 2017/12/20 22:03:43 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ typedef struct	s_rtv1
 	int		fd;
 	t_cam	cam;
 	t_obj	*obj;
+	int		nodes;
+	double	asp_ratio;
 }				t_rtv1;
 
 void		render(t_rtv1 *rt);
@@ -157,6 +159,7 @@ t_union		getplane(t_rtv1 *rt);
 void		getcone(t_rtv1 *rt);
 void		getcylinder(t_rtv1 *rt);
 t_obj		getobject(int type, t_union u);
+double		*findintersects(t_ray ray, t_rtv1 *rt);
 
 
 #endif

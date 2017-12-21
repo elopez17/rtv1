@@ -95,5 +95,6 @@ void		parsefile(t_rtv1 *rt)
 		ft_strdel(&line);
 		obj->next = (rt->obj != NULL) ? rt->obj : NULL;
 		rt->obj = obj;
+		++rt->nodes;
 	}
 }

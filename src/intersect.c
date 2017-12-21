@@ -53,3 +53,27 @@ double	findintersphere(t_ray ray, t_sphere sphere)
 		return (-1);
 	}
 }
+
+double	*findintersects(t_ray ray, t_rtv1 *rt)
+{
+	double	*intersects;
+	int		i;
+	t_obj	*objects;
+
+	i = -1;
+	objects = rt->obj;
+	intersects = (double*)malloc(sizeof(double) * rt->nodes);
+	while (++i < rt->nodes)
+	{
+		(i != 0) ? objects = objects->next : 0;
+		if (objects->type == 1)
+			intersects[i] = findintersphere(ray, objects->u.sphere);
+		else if (objects->type == 2)
+			intersects[i] = findinterplane(ray, objects->u.plane);
+		else if (objects->type == 3)
+			;//intersects[i] = findintercone(ray, objects->u.cone);
+		else
+			;//intersects[i] = findintercylinder(ray, objects->u.cylinder);
+	}
+	return (intersects);
+}
