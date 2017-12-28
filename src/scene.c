@@ -1,18 +1,57 @@
 #include <rtv1.h>
 
-static t_rgb	color_at(int index, t_obj *objects)
+static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *lights)
 {
 	t_obj	*tmp;
+	t_vert	light_dir;
+	t_vert	dist_to_light;
+	float	dist_to_light_mag;
+	double	*intersects;
+	t_vert	obj_norm;
+	double	cosine_ang;
+	t_ray	shadow;
+	int		shadowed;
+	int		i;
+	t_rgb	final;
 
 	if (index == -1)
 		return ((t_rgb){0, 0, 0});
-	tmp = objects;
+	shadowed = 0;
+	shadow.origin = intersection->origin;
+	shadow.dir = normalize(add_vert(lights->pos, invert(intersection->origin)));
+	tmp = rt->obj;
+	light_dir = add_vert(lights->pos, invert(intersection->origin));
 	while (--index >= 0)
 		tmp = tmp->next;
+	dist_to_light = add_vert(lights->pos, invert(intersection->origin));
+	dist_to_light_mag = sqrt((dist_to_light.x * dist_to_light.x) + (dist_to_light.y * dist_to_light.y) + (dist_to_light.z * dist_to_light.z));
+	intersects = findintersects(shadow, rt);
+	i = -1;
+	while (++i < rt->nodes)
+		if (intersects[i] > 0 && intersects[i] <= dist_to_light_mag)
+		{
+			shadowed = 1;
+			break ;
+		}
+	ft_memdel((void**)&intersects);
 	if (tmp->type == 1)
-		return (tmp->u.sphere.clr);
+	{
+		obj_norm = sphere_norm(tmp->u.sphere, intersection->origin);
+		cosine_ang = dot_prod(light_dir, obj_norm);
+		final = colorscalar(tmp->u.sphere.clr, 0.2);
+		if (shadowed == 0)
+			final = coloradd(final, colorscalar(colormult(tmp->u.sphere.clr, lights->clr), cosine_ang));
+		return (final);
+	}
 	else if (tmp->type == 2)
-		return (tmp->u.plane.clr);
+	{
+		obj_norm = tmp->u.plane.norm;
+		cosine_ang = dot_prod(light_dir, obj_norm);
+		final = colorscalar(tmp->u.plane.clr, 0.2);
+		if (shadowed == 0)
+			final = coloradd(final, colorscalar(colormult(tmp->u.plane.clr, lights->clr), cosine_ang));
+		return (final);
+	}
 	else if (tmp->type == 3)
 		;//return (tmp->u.cone.clr);
 	else
@@ -74,6 +113,7 @@ void	scene(t_rtv1 *rt)
 	t_ray		ray;
 	t_light		light;
 	double		*intersects;
+	t_ray		intersection;
 	int			index;
 
 	light.pos = (t_vert){-7, 10, -10};
@@ -89,8 +129,12 @@ void	scene(t_rtv1 *rt)
 			ray.origin = rt->cam.pos;
 			ray.dir = normalize(add_vert(rt->cam.dir, add_vert(mult_vert(rt->cam.right, dir.x - 0.5), mult_vert(rt->cam.down, dir.y - 0.5))));
 			intersects = findintersects(ray, rt);
-			index = winningobject(intersects, rt->nodes);
-			putpixel(rt, pixel.x, pixel.y, color_at(index, rt->obj));
+			if ((index = winningobject(intersects, rt->nodes)) != -1)
+			{
+				intersection.origin = add_vert(ray.origin, mult_vert(ray.dir, intersects[index]));
+				intersection.dir = ray.dir;
+			}
+			putpixel(rt, pixel.x, pixel.y, color_at(&intersection, index, rt, &light));
 			ft_memdel((void**)&intersects);
 		}
 	}
