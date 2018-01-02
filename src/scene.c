@@ -28,7 +28,7 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 	intersects = findintersects(shadow, rt);
 	i = -1;
 	while (++i < rt->nodes)
-		if (intersects[i] > 0 && intersects[i] <= dist_to_light_mag)
+		if (intersects[i] > 0.00000001 && intersects[i] <= dist_to_light_mag)
 		{
 			shadowed = 1;
 			break ;
@@ -73,10 +73,10 @@ static int	winningobject(double *intersects, int nodes)
 	while (++i < nodes)
 		if (intersects[i] > max)
 			max = intersects[i];
-	if (max > 0)
+	if (max >= 0.00000001)
 	{
 		while (--i >= 0)
-			if (intersects[i] > 0 && intersects[i] <= max)
+			if (intersects[i] >= 0.00000001 && intersects[i] <= max)
 			{
 				max = intersects[i];
 				index = i;
@@ -90,18 +90,18 @@ static void	setxy(t_rtv1 *rt, t_xy *dir, t_xy *pixel)
 {
 	if (rt->w.width > rt->w.height)
 	{
-		dir->x = ((pixel->x + 0.5) / rt->w.width) * rt->asp_ratio - (((rt->w.width - rt->w.height) / (double)rt->w.height) / 2);
-		dir->y = ((rt->w.height - pixel->y) + 0.5) / rt->w.height;
+		dir->x = (pixel->x / rt->w.width) * rt->asp_ratio - (((rt->w.width - rt->w.height) / (double)rt->w.height) / 2);
+		dir->y = ((rt->w.height - pixel->y)) / rt->w.height;
 	}
 	else if (rt->w.height > rt->w.width)
 	{
-		dir->x = (pixel->x + 0.5) / rt->w.width;
-		dir->y = (((rt->w.height - pixel->y) + 0.5) / rt->w.height) / rt->asp_ratio - (((rt->w.height - rt->w.width) / (double)rt->w.width) / 2);
+		dir->x = pixel->x / rt->w.width;
+		dir->y = ((rt->w.height - pixel->y) / rt->w.height) / rt->asp_ratio - (((rt->w.height - rt->w.width) / (double)rt->w.width) / 2);
 	}
 	else
 	{
-		dir->x = (pixel->x + 0.5) / rt->w.width;
-		dir->y = ((rt->w.height - pixel->y) + 0.5) / rt->w.height;
+		dir->x = pixel->x / rt->w.width;
+		dir->y = (rt->w.height - pixel->y) / rt->w.height;
 	}
 }
 

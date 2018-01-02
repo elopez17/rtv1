@@ -6,12 +6,13 @@ double	findinterplane(t_ray ray, t_plane plane)
 	double	b;
 
 	a = dot_prod(ray.dir, plane.norm);
+// this is testing if ray direction is parallel to plane.
 	if (a == 0)
 		return (-1);
 	else
 	{
 		b = dot_prod(plane.norm, add_vert(ray.origin, invert(mult_vert(plane.norm, plane.dist))));
-		return (-1 * b / a);
+		return (-b / a);
 	}
 }
 
@@ -37,14 +38,14 @@ double	findintersphere(t_ray ray, t_sphere sphere)
 	discriminant = b * b - 4 * c;
 	if (discriminant > 0)
 	{
-		root = ((-1 * b - sqrt(discriminant)) / 2) - 0.0000001;
-		if (root > 0)
+		root = ((-b - sqrt(discriminant)) / 2) - 0.000001;
+		if (root >= 0.00000001)
 		{
 			return (root);
 		}
 		else
 		{
-			root = ((sqrt(discriminant) - b) / 2) - 0.0000001;
+			root = ((sqrt(discriminant) - b) / 2) - 0.000001;
 			return (root);
 		}
 	}
