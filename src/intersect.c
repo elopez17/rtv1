@@ -6,7 +6,6 @@ double	findinterplane(t_ray ray, t_plane plane)
 	double	b;
 
 	a = dot_prod(ray.dir, plane.norm);
-// this is testing if ray direction is parallel to plane.
 	if (a == 0)
 		return (-1);
 	else
@@ -72,9 +71,9 @@ double	*findintersects(t_ray ray, t_rtv1 *rt)
 		else if (objects->type == 2)
 			intersects[i] = findinterplane(ray, objects->u.plane);
 		else if (objects->type == 3)
-			;//intersects[i] = findintercone(ray, objects->u.cone);
+			intersects[i] = findintercone(ray, objects->u.cone);
 		else
-			;//intersects[i] = findintercylinder(ray, objects->u.cylinder);
+			intersects[i] = findintercylinder(ray, objects->u.cylinder);
 	}
 	return (intersects);
 }

@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2017/12/21 12:42:20 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/01 19:31:42 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,20 @@ typedef struct	s_plane
 	t_rgb	clr;
 }				t_plane;
 
+typedef struct	s_cone
+{
+	t_vert	pos;
+	double	alpha;
+	t_rgb	clr;
+}				t_cone;
+
+typedef struct	s_cylinder
+{
+	t_vert	pos;
+	double	radius;
+	t_rgb	clr;
+}				t_cylinder;
+
 typedef struct	s_camera
 {
 	t_vert	pos;
@@ -106,6 +120,8 @@ typedef union	u_union
 {
 	t_sphere	sphere;
 	t_plane		plane;
+	t_cone		cone;
+	t_cylinder	cylinder;
 	t_light		light;
 }				t_union;
 
@@ -148,6 +164,8 @@ t_vert		mult_vert(t_vert v, double scalar);
 t_vert		diff_vert(t_vert v1, t_vert v2);
 double		findinterplane(t_ray ray, t_plane plane);
 double		findintersphere(t_ray ray, t_sphere sphere);
+double		findintercone(t_ray ray, t_cone cone);
+double		findintercylinder(t_ray ray, t_cylinder cylinder);
 t_vert		sphere_norm(t_sphere sphere, t_vert point);
 void		scene(t_rtv1 *rt);
 double		brightness(t_rgb color);
