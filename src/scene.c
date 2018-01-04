@@ -1,13 +1,5 @@
 #include <rtv1.h>
 
-static double	norm_vect(t_vert v)
-{
-	double	rslt;
-
-	rslt = sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2));
-	return (rslt);
-}
-
 static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *lights)
 {
 	t_obj	*tmp;
@@ -63,7 +55,7 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 	else if (tmp->type == 3)
 	{
 		obj_norm = cone_norm(tmp->u.cone, intersection->origin);
-		cosine_ang = dot_prod(light_dir, obj_norm) / norm_vect(obj_norm) * norm_vect(light_dir);
+		cosine_ang = dot_prod(light_dir, obj_norm);
 		final = colorscalar(tmp->u.cone.clr, 0.2);
 		if (shadowed == 0)
 			final = coloradd(final, colorscalar(colormult(tmp->u.cone.clr, lights->clr), cosine_ang));
