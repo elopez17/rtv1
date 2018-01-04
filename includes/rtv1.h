@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/01 19:31:42 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/04 11:53:30 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ typedef struct	s_plane
 typedef struct	s_cone
 {
 	t_vert	pos;
+	t_vert	dir;
+	double	h;
 	double	alpha;
 	t_rgb	clr;
 }				t_cone;
@@ -103,7 +105,9 @@ typedef struct	s_cone
 typedef struct	s_cylinder
 {
 	t_vert	pos;
+	t_vert	dir;
 	double	radius;
+	double	h;
 	t_rgb	clr;
 }				t_cylinder;
 
@@ -167,6 +171,7 @@ double		findintersphere(t_ray ray, t_sphere sphere);
 double		findintercone(t_ray ray, t_cone cone);
 double		findintercylinder(t_ray ray, t_cylinder cylinder);
 t_vert		sphere_norm(t_sphere sphere, t_vert point);
+t_vert		cone_norm(t_cone cone, t_vert point);
 void		scene(t_rtv1 *rt);
 double		brightness(t_rgb color);
 t_rgb		colorscalar(t_rgb color, double scalar);
@@ -180,8 +185,8 @@ t_rgb		getcolor(const char *line);
 void		getcam(t_rtv1 *rt);
 t_union		getsphere(t_rtv1 *rt);
 t_union		getplane(t_rtv1 *rt);
-void		getcone(t_rtv1 *rt);
-void		getcylinder(t_rtv1 *rt);
+t_union		getcone(t_rtv1 *rt);
+t_union		getcylinder(t_rtv1 *rt);
 t_obj		getobject(int type, t_union u);
 double		*findintersects(t_ray ray, t_rtv1 *rt);
 

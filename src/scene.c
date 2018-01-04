@@ -1,5 +1,13 @@
 #include <rtv1.h>
 
+static double	norm_vect(t_vert v)
+{
+	double	rslt;
+
+	rslt = sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2));
+	return (rslt);
+}
+
 static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *lights)
 {
 	t_obj	*tmp;
@@ -20,7 +28,7 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 	shadow.origin = intersection->origin;
 	shadow.dir = normalize(add_vert(lights->pos, invert(intersection->origin)));
 	tmp = rt->obj;
-	light_dir = add_vert(lights->pos, invert(intersection->origin));
+	light_dir = normalize(add_vert(lights->pos, invert(intersection->origin)));
 	while (--index >= 0)
 		tmp = tmp->next;
 	dist_to_light = add_vert(lights->pos, invert(intersection->origin));
@@ -53,9 +61,18 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 		return (final);
 	}
 	else if (tmp->type == 3)
-		;//return (tmp->u.cone.clr);
+	{
+		obj_norm = cone_norm(tmp->u.cone, intersection->origin);
+		cosine_ang = dot_prod(light_dir, obj_norm) / norm_vect(obj_norm) * norm_vect(light_dir);
+		final = colorscalar(tmp->u.cone.clr, 0.2);
+		if (shadowed == 0)
+			final = coloradd(final, colorscalar(colormult(tmp->u.cone.clr, lights->clr), cosine_ang));
+		return (final);
+	}
 	else
-		;//return (tmp->u.cylinder.clr);
+	{
+		return (tmp->u.cylinder.clr);
+	}
 	return ((t_rgb){0, 0, 0});
 }
 
@@ -66,7 +83,7 @@ static int	winningobject(double *intersects, int nodes)
 	int		index;
 
 	i = -1;
-	max = 0;
+	max = -1;
 	index = 0;
 	if (nodes == 0)
 		return (-1);
@@ -88,21 +105,8 @@ static int	winningobject(double *intersects, int nodes)
 
 static void	setxy(t_rtv1 *rt, t_xy *dir, t_xy *pixel)
 {
-	if (rt->w.width > rt->w.height)
-	{
-		dir->x = (pixel->x / rt->w.width) * rt->asp_ratio - (((rt->w.width - rt->w.height) / (double)rt->w.height) / 2);
-		dir->y = ((rt->w.height - pixel->y)) / rt->w.height;
-	}
-	else if (rt->w.height > rt->w.width)
-	{
-		dir->x = pixel->x / rt->w.width;
-		dir->y = ((rt->w.height - pixel->y) / rt->w.height) / rt->asp_ratio - (((rt->w.height - rt->w.width) / (double)rt->w.width) / 2);
-	}
-	else
-	{
-		dir->x = pixel->x / rt->w.width;
-		dir->y = (rt->w.height - pixel->y) / rt->w.height;
-	}
+	dir->x = pixel->x / rt->w.width;
+	dir->y = (rt->w.height - pixel->y) / rt->w.height;
 }
 
 void	scene(t_rtv1 *rt)
@@ -116,7 +120,7 @@ void	scene(t_rtv1 *rt)
 	t_ray		intersection;
 	int			index;
 
-	light.pos = (t_vert){-7, 10, -10};
+	light.pos = (t_vert){-60, 30, -60};
 	light.clr = (t_rgb){0xff, 0xff, 0xff};
 	pixel.y = -1;
 	while(++pixel.y < rt->w.height)

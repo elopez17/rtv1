@@ -5,6 +5,8 @@ t_vert	normalize(t_vert v)
 	double	magnitude;
 
 	magnitude = sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
+	if (magnitude == 0)
+		magnitude = 1;
 	return ((t_vert){v.x / magnitude, v.y / magnitude, v.z / magnitude});
 }
 

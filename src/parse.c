@@ -87,9 +87,9 @@ void		parsefile(t_rtv1 *rt)
 		else if (ft_strstr(line, "plane"))
 			*obj = getobject(2, getplane(rt));
 		else if (ft_strstr(line, "cone"))
-			;//*obj = getobject(3, getcone(rt));
+			*obj = getobject(3, getcone(rt));
 		else if (ft_strstr(line, "cylinder"))
-			;//*obj = getobject(4, getcylinder(rt));
+			*obj = getobject(4, getcylinder(rt));
 		else
 			rtv1_error(2);
 		ft_strdel(&line);

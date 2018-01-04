@@ -29,7 +29,7 @@ t_union	getsphere(t_rtv1 *rt)
 		else if (ft_strstr(line, "color"))
 			u.sphere.clr = getcolor(line);
 		else if (ft_strstr(line, "radius"))
-			u.sphere.radius = ft_atoi(ft_strchr(line, '(') + 1);
+			u.sphere.radius = ft_atod(ft_strchr(line, '(') + 1);
 		else if (ft_strrchr(line, '}'))
 		{
 			ft_strdel(&line);
@@ -73,16 +73,19 @@ t_union	getplane(t_rtv1 *rt)
 	return (u);
 }
 
-void	getcylinder(t_rtv1 *rt)
+t_union	getcylinder(t_rtv1 *rt)
 {
 	char	*line;
+	t_union	u;
 
 	while (get_next_line(rt->fd, &line) > 0)
 	{
 		if (ft_strstr(line, "origin"))
-			;//rt-> = getxyz(line);
+			u.cylinder.pos = getxyz(line);
 		else if (ft_strstr(line, "color"))
-			;
+			u.cylinder.clr = getcolor(line);
+		else if (ft_strstr(line, "radius"))
+			u.cylinder.radius = ft_atod(ft_strchr(line, '(') + 1);
 		else if (ft_strrchr(line, '}'))
 		{
 			ft_strdel(&line);
@@ -95,18 +98,26 @@ void	getcylinder(t_rtv1 *rt)
 		}
 		ft_strdel(&line);
 	}
+	return (u);
 }
 
-void	getcone(t_rtv1 *rt)
+t_union	getcone(t_rtv1 *rt)
 {
 	char	*line;
+	t_union u;
 
 	while (get_next_line(rt->fd, &line) > 0)
 	{
 		if (ft_strstr(line, "origin"))
-			;//rt-> = getxyz(line);
+			u.cone.pos = getxyz(line);
+		else if (ft_strstr(line, "direction"))
+			u.cone.dir = normalize(getxyz(line));
 		else if (ft_strstr(line, "color"))
-			;
+			u.cone.clr = getcolor(line);
+		else if (ft_strstr(line, "angle"))
+			u.cone.alpha = (PI / 180) * ft_atod(ft_strchr(line, '(') + 1);
+		else if (ft_strstr(line, "height"))
+			u.cone.h = ft_atod(ft_strchr(line, '(') + 1);
 		else if (ft_strrchr(line, '}'))
 		{
 			ft_strdel(&line);
@@ -119,4 +130,5 @@ void	getcone(t_rtv1 *rt)
 		}
 		ft_strdel(&line);
 	}
+	return (u);
 }

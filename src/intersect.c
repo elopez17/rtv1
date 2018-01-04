@@ -29,29 +29,26 @@ double	findintersphere(t_ray ray, t_sphere sphere)
 	double	b;
 	double	c;
 	double	discriminant;
-	double	root;
+	double	root[2];
 
-	a = 1;
-	b = (2 * (ray.origin.x - sphere.pos.x) * ray.dir.x) + (2 * (ray.origin.y - sphere.pos.y) * ray.dir.y) + (2 * (ray.origin.z - sphere.pos.z) * ray.dir.z);
-	c = pow(ray.origin.x - sphere.pos.x, 2) + pow(ray.origin.y - sphere.pos.y, 2) + pow(ray.origin.z - sphere.pos.z, 2) - (sphere.radius * sphere.radius);
-	discriminant = b * b - 4 * c;
-	if (discriminant > 0)
+	a = pow(ray.dir.x, 2) + pow(ray.dir.y, 2) + pow(ray.dir.z, 2);
+	b = (2 * (ray.origin.x - sphere.pos.x) * ray.dir.x) +
+		(2 * (ray.origin.y - sphere.pos.y) * ray.dir.y) +
+		(2 * (ray.origin.z - sphere.pos.z) * ray.dir.z);
+	c = pow(ray.origin.x - sphere.pos.x, 2) +
+		pow(ray.origin.y - sphere.pos.y, 2) +
+		pow(ray.origin.z - sphere.pos.z, 2) - (sphere.radius * sphere.radius);
+	discriminant = b * b - 4 * a * c;
+	if (discriminant >= 0)
 	{
-		root = ((-b - sqrt(discriminant)) / 2) - 0.000001;
-		if (root >= 0.00000001)
-		{
-			return (root);
-		}
+		root[0] = ((-b - sqrt(discriminant)) / (2 * a));
+		root[1] = ((-b + sqrt(discriminant)) / (2 * a));
+		if (root[0] >= 0.00000001)
+			return (root[0]);
 		else
-		{
-			root = ((sqrt(discriminant) - b) / 2) - 0.000001;
-			return (root);
-		}
+			return (root[1]);
 	}
-	else
-	{
-		return (-1);
-	}
+	return (-1);
 }
 
 double	*findintersects(t_ray ray, t_rtv1 *rt)
