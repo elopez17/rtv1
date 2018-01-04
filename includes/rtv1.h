@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/04 11:53:30 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/04 14:22:07 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct	s_cone
 	t_vert	pos;
 	t_vert	dir;
 	double	h;
-	double	alpha;
+	double	a;
 	t_rgb	clr;
 }				t_cone;
 
@@ -162,6 +162,7 @@ int			expose_hook(t_rtv1 **rt);
 t_vert		normalize(t_vert v);
 t_vert		invert(t_vert v);
 double		dot_prod(t_vert v1, t_vert v2);
+double		sqr_vert(t_vert v);
 t_vert		cross_prod(t_vert v1, t_vert v2);
 t_vert		add_vert(t_vert v1, t_vert v2);
 t_vert		mult_vert(t_vert v, double scalar);

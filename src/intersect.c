@@ -45,8 +45,7 @@ double	findintersphere(t_ray ray, t_sphere sphere)
 		root[1] = ((-b + sqrt(discriminant)) / (2 * a));
 		if (root[0] >= 0.00000001)
 			return (root[0]);
-		else
-			return (root[1]);
+		return ((root[1] >= 0.00000001) ? root[1] : -1);
 	}
 	return (-1);
 }

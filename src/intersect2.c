@@ -16,24 +16,24 @@ double	findintercone(t_ray ray, t_cone cone)
 	double	c;
 	double	d;
 	double	rslt[2];
-	double	tmp;
 
-	tmp = tan(50 * (PI/180));
-	a = pow(ray.dir.x, 2) + pow(ray.dir.y, 2) - (pow(ray.dir.z, 2) * tmp);
-	b = 2 * ((ray.origin.x - cone.pos.x) * ray.dir.x + 
-(ray.origin.y - cone.pos.y) * ray.dir.y - (ray.origin.z - cone.pos.z) * (ray.dir.z * tmp));
-	c = pow((ray.origin.x - cone.pos.x), 2) + pow((ray.origin.y - cone.pos.y), 2)
-		- (pow((ray.origin.z - cone.pos.z), 2) * tmp);
+	a = pow(cos(cone.a), 2) * sqr_vert(diff_vert(ray.dir, mult_vert(cone.dir, dot_prod(ray.dir, cone.dir)))) -
+		pow(sin(cone.a), 2) * dot_prod(ray.dir, cone.dir) * dot_prod(ray.dir, cone.dir);
+	b = 2 * pow(cos(cone.a), 2) * dot_prod(diff_vert(ray.dir, mult_vert(cone.dir, dot_prod(ray.dir, cone.dir))), 
+		diff_vert(diff_vert(ray.origin, cone.pos), mult_vert(cone.dir, dot_prod(diff_vert(ray.origin, cone.pos), cone.dir))))
+		- 2 * pow(sin(cone.a), 2) * dot_prod(ray.dir, cone.dir) * dot_prod(diff_vert(ray.origin, cone.pos), cone.dir);
+	c = pow(cos(cone.a), 2) * sqr_vert(diff_vert(diff_vert(ray.origin, cone.pos), mult_vert(cone.dir, dot_prod(diff_vert(ray.origin, cone.pos), cone.dir)))) -
+		pow(sin(cone.a), 2) * dot_prod(diff_vert(ray.origin, cone.pos), cone.dir) * dot_prod(diff_vert(ray.origin, cone.pos), cone.dir);
 	d = b * b - 4 * a * c;
 	if (d >= 0)
 	{
 		rslt[0] = (-b - sqrt(d)) / (2 * a);
 		rslt[1] = (-b + sqrt(d)) / (2 * a);
-		rslt[0] = (rslt[1] >= 0 && rslt[1] < rslt[0]) ? rslt[1] : rslt[0];
+		if (rslt[0] >= 0.00000001)
+			return (rslt[0]);
+		return ((rslt[1] >= 0.00000001) ? rslt[1] : -1);
 	}
-	else
-		rslt[0] = -1;
-	return (rslt[0]);
+	return (-1);
 }
 
 double	findintercylinder(t_ray ray, t_cylinder cylinder)
