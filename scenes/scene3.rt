@@ -12,7 +12,7 @@ scene {
 		origin(0, 0, 0);
 		direction(1, 0, 0);
 		color(0, 100, 0);
-		angle(30);
-		height(100);
+		angle(10);
+		height(10);
 	}
 }

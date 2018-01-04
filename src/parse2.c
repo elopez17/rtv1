@@ -115,7 +115,7 @@ t_union	getcone(t_rtv1 *rt)
 		else if (ft_strstr(line, "color"))
 			u.cone.clr = getcolor(line);
 		else if (ft_strstr(line, "angle"))
-			u.cone.a = (PI / 180) * ft_atod(ft_strchr(line, '(') + 1);
+			u.cone.a = (M_PI / 180) * ft_atod(ft_strchr(line, '(') + 1);
 		else if (ft_strstr(line, "height"))
 			u.cone.h = ft_atod(ft_strchr(line, '(') + 1);
 		else if (ft_strrchr(line, '}'))
