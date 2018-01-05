@@ -43,10 +43,7 @@ void		getcam(t_rtv1 *rt)
 			break ;
 		}
 		else
-		{
-			ft_strdel(&line);
 			rtv1_error(2);
-		}
 		ft_strdel(&line);
 	}
 	rt->cam.dir = diff_vect(rt->cam.pos, rt->cam.look_at);

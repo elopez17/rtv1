@@ -4,7 +4,7 @@ t_rgb	getcolor(const char *line)
 {
 	t_rgb	color;
 
-	color = (t_rgb){255, 255, 255};
+	color = (t_rgb){0, 0, 0};
 	if ((line = ft_strrchr(line, '(')) == NULL)
 		rtv1_error(2);
 	color.red = ft_atoi(++line);
@@ -36,10 +36,7 @@ t_union	getsphere(t_rtv1 *rt)
 			break ;
 		}
 		else
-		{
-			ft_strdel(&line);
 			rtv1_error(2);
-		}
 		ft_strdel(&line);
 	}
 	return (u);
@@ -64,10 +61,7 @@ t_union	getplane(t_rtv1 *rt)
 			break ;
 		}
 		else
-		{
-			ft_strdel(&line);
 			rtv1_error(2);
-		}
 		ft_strdel(&line);
 	}
 	return (u);
@@ -96,10 +90,7 @@ t_union	getcylinder(t_rtv1 *rt)
 			break ;
 		}
 		else
-		{
-			ft_strdel(&line);
 			rtv1_error(2);
-		}
 		ft_strdel(&line);
 	}
 	return (u);
@@ -128,10 +119,7 @@ t_union	getcone(t_rtv1 *rt)
 			break ;
 		}
 		else
-		{
-			ft_strdel(&line);
 			rtv1_error(2);
-		}
 		ft_strdel(&line);
 	}
 	return (u);
