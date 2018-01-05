@@ -10,16 +10,16 @@ double	findinterplane(t_ray ray, t_plane plane)
 		return (-1);
 	else
 	{
-		b = dot_prod(plane.norm, add_vert(ray.origin, invert(mult_vert(plane.norm, plane.dist))));
+		b = dot_prod(plane.norm, add_vect(ray.origin, invert(mult_vect(plane.norm, plane.dist))));
 		return (-b / a);
 	}
 }
 
-t_vert	sphere_norm(t_sphere sphere, t_vert point)
+t_vect	sphere_norm(t_sphere sphere, t_vect point)
 {
-	t_vert	normal;
+	t_vect	normal;
 
-	normal = normalize(add_vert(point, invert(sphere.pos)));
+	normal = normalize(add_vect(point, invert(sphere.pos)));
 	return (normal);
 }
 

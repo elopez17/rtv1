@@ -10,21 +10,21 @@ t_obj		getobject(int type, t_union u)
 	return (obj);
 }
 
-t_vert		getxyz(const char *line)
+t_vect		getxyz(const char *line)
 {
-	t_vert	vertex;
+	t_vect	vect;
 
-	vertex = (t_vert){0, 0, 0};
+	vect = (t_vect){0, 0, 0};
 	if ((line = ft_strrchr(line, '(')) == NULL)
 		rtv1_error(2);
-	vertex.x = ft_atod(++line);
+	vect.x = ft_atod(++line);
 	if ((line = ft_strchr(line, ',')) == NULL)
 		rtv1_error(2);
-	vertex.y = ft_atod(++line);
+	vect.y = ft_atod(++line);
 	if ((line = ft_strchr(line, ',')) == NULL)
 		rtv1_error(2);
-	vertex.z = ft_atod(++line);
-	return (vertex);
+	vect.z = ft_atod(++line);
+	return (vect);
 }
 
 void		getcam(t_rtv1 *rt)
@@ -49,9 +49,9 @@ void		getcam(t_rtv1 *rt)
 		}
 		ft_strdel(&line);
 	}
-	rt->cam.dir = diff_vert(rt->cam.pos, rt->cam.look_at);
+	rt->cam.dir = diff_vect(rt->cam.pos, rt->cam.look_at);
 	rt->cam.dir = normalize(invert(rt->cam.dir));
-	rt->cam.right = cross_prod((t_vert){0, 1, 0}, rt->cam.dir);
+	rt->cam.right = cross_prod((t_vect){0, 1, 0}, rt->cam.dir);
 	rt->cam.right = normalize(rt->cam.right);
 	rt->cam.down = cross_prod(rt->cam.right, rt->cam.dir);
 }

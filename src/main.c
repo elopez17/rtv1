@@ -15,11 +15,11 @@ static void	init_rtv1(t_rtv1 **rt, char *file)
 													&((*rt)->endian));
 	(*rt)->obj = (t_obj*)NULL;
 	(*rt)->nodes = 0;
-	(*rt)->cam.pos = (t_vert){0, 0, 0};
-	(*rt)->cam.dir = (t_vert){0, 0, 0};
-	(*rt)->cam.right = (t_vert){0, 0, 0};
-	(*rt)->cam.down = (t_vert){0, 0, 0};
-	(*rt)->cam.look_at = (t_vert){0, 0, 0};
+	(*rt)->cam.pos = (t_vect){0, 0, 0};
+	(*rt)->cam.dir = (t_vect){0, 0, 0};
+	(*rt)->cam.right = (t_vect){0, 0, 0};
+	(*rt)->cam.down = (t_vect){0, 0, 0};
+	(*rt)->cam.look_at = (t_vect){0, 0, 0};
 	if (((*rt)->fd = open(file, O_RDONLY)) == -1)
 		rtv1_error(1);
 	parsefile(*rt);

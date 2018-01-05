@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/04 18:19:17 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/04 19:04:25 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ typedef struct	s_xy
 	double	y;
 }				t_xy;
 
-typedef struct	s_vertex
+typedef struct	s_vector
 {
 	double		x;
 	double		y;
 	double		z;
-}				t_vert;
+}				t_vect;
 
 typedef struct	s_rgb
 {
@@ -69,34 +69,34 @@ typedef struct	s_rgb
 
 typedef struct	s_ray
 {
-	t_vert	origin;
-	t_vert	dir;
+	t_vect	origin;
+	t_vect	dir;
 }				t_ray;
 
 typedef struct	s_light
 {
-	t_vert	pos;
+	t_vect	pos;
 	t_rgb	clr;
 }				t_light;
 
 typedef struct	s_sphere
 {
-	t_vert	pos;
+	t_vect	pos;
 	double	radius;
 	t_rgb	clr;
 }				t_sphere;
 
 typedef struct	s_plane
 {
-	t_vert	norm;
+	t_vect	norm;
 	double dist;
 	t_rgb	clr;
 }				t_plane;
 
 typedef struct	s_cone
 {
-	t_vert	pos;
-	t_vert	dir;
+	t_vect	pos;
+	t_vect	dir;
 	double	h;
 	double	a;
 	t_rgb	clr;
@@ -104,8 +104,8 @@ typedef struct	s_cone
 
 typedef struct	s_cylinder
 {
-	t_vert	pos;
-	t_vert	dir;
+	t_vect	pos;
+	t_vect	dir;
 	double	radius;
 	double	h;
 	t_rgb	clr;
@@ -113,11 +113,11 @@ typedef struct	s_cylinder
 
 typedef struct	s_camera
 {
-	t_vert	pos;
-	t_vert	dir;
-	t_vert	right;
-	t_vert	down;
-	t_vert	look_at;
+	t_vect	pos;
+	t_vect	dir;
+	t_vect	right;
+	t_vect	down;
+	t_vect	look_at;
 }				t_cam;
 
 typedef union	u_union
@@ -154,27 +154,26 @@ typedef struct	s_rtv1
 }				t_rtv1;
 
 void		render(t_rtv1 *rt);
-void		drawline(t_rtv1 *rt, t_vert *a, t_vert *b, t_rgb color);
 void		putpixel(t_rtv1 *rt, int x, int y, t_rgb color);
 int			key_hook(int key, t_rtv1 **rt);
 int			close_hook(t_rtv1 **rt);
 int			expose_hook(t_rtv1 **rt);
-t_vert		normalize(t_vert v);
-t_vert		invert(t_vert v);
-double		dot_prod(t_vert v1, t_vert v2);
-double		sqr_vert(t_vert v);
-double		len_vert(t_vert v);
-t_vert		cross_prod(t_vert v1, t_vert v2);
-t_vert		add_vert(t_vert v1, t_vert v2);
-t_vert		mult_vert(t_vert v, double scalar);
-t_vert		diff_vert(t_vert v1, t_vert v2);
+t_vect		normalize(t_vect v);
+t_vect		invert(t_vect v);
+double		dot_prod(t_vect v1, t_vect v2);
+double		sqr_vect(t_vect v);
+double		len_vect(t_vect v);
+t_vect		cross_prod(t_vect v1, t_vect v2);
+t_vect		add_vect(t_vect v1, t_vect v2);
+t_vect		mult_vect(t_vect v, double scalar);
+t_vect		diff_vect(t_vect v1, t_vect v2);
 double		findinterplane(t_ray ray, t_plane plane);
 double		findintersphere(t_ray ray, t_sphere sphere);
 double		findintercone(t_ray ray, t_cone cone);
 double		findintercylinder(t_ray ray, t_cylinder cylinder);
-t_vert		sphere_norm(t_sphere sphere, t_vert point);
-t_vert		cone_norm(t_cone cone, t_vert point);
-t_vert		cylinder_norm(t_cylinder cylinder, t_vert point);
+t_vect		sphere_norm(t_sphere sphere, t_vect point);
+t_vect		cone_norm(t_cone cone, t_vect point);
+t_vect		cylinder_norm(t_cylinder cylinder, t_vect point);
 void		scene(t_rtv1 *rt);
 double		brightness(t_rgb color);
 t_rgb		colorscalar(t_rgb color, double scalar);
@@ -183,7 +182,7 @@ t_rgb		colormult(t_rgb clr1, t_rgb clr2);
 t_rgb		coloravg(t_rgb clr1, t_rgb clr2);
 void		rtv1_error(int code);
 void		parsefile(t_rtv1 *rt);
-t_vert		getxyz(const char *line);
+t_vect		getxyz(const char *line);
 t_rgb		getcolor(const char *line);
 void		getcam(t_rtv1 *rt);
 t_union		getsphere(t_rtv1 *rt);

@@ -1,6 +1,6 @@
 #include <rtv1.h>
 
-static double	norm_vert(t_vert v)
+static double	norm_vect(t_vect v)
 {
 	return (sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2)));
 }
@@ -8,11 +8,11 @@ static double	norm_vert(t_vert v)
 static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *lights)
 {
 	t_obj	*tmp;
-	t_vert	light_dir;
-	t_vert	dist_to_light;
+	t_vect	light_dir;
+	t_vect	dist_to_light;
 	float	dist_to_light_mag;
 	double	*intersects;
-	t_vert	obj_norm;
+	t_vect	obj_norm;
 	double	cosine_ang;
 	t_ray	shadow;
 	int		shadowed;
@@ -23,12 +23,12 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 		return ((t_rgb){0, 0, 0});
 	shadowed = 0;
 	shadow.origin = intersection->origin;
-	shadow.dir = normalize(add_vert(lights->pos, invert(intersection->origin)));
+	shadow.dir = normalize(add_vect(lights->pos, invert(intersection->origin)));
 	tmp = rt->obj;
-	light_dir = normalize(add_vert(lights->pos, invert(intersection->origin)));
+	light_dir = normalize(add_vect(lights->pos, invert(intersection->origin)));
 	while (--index >= 0)
 		tmp = tmp->next;
-	dist_to_light = add_vert(lights->pos, invert(intersection->origin));
+	dist_to_light = add_vect(lights->pos, invert(intersection->origin));
 	dist_to_light_mag = sqrt((dist_to_light.x * dist_to_light.x) + (dist_to_light.y * dist_to_light.y) + (dist_to_light.z * dist_to_light.z));
 	intersects = findintersects(shadow, rt);
 	i = -1;
@@ -60,7 +60,7 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 	else if (tmp->type == 3)
 	{
 		obj_norm = cone_norm(tmp->u.cone, intersection->origin);
-		cosine_ang = dot_prod(light_dir, obj_norm) / norm_vert(light_dir) * norm_vert(obj_norm);
+		cosine_ang = dot_prod(light_dir, obj_norm) / norm_vect(light_dir) * norm_vect(obj_norm);
 		final = colorscalar(tmp->u.cone.clr, 0.2);
 		if (shadowed == 0 && cosine_ang >= 0.0f && cosine_ang <= 1.0f)
 			final = coloradd(final, colorscalar(colormult(tmp->u.cone.clr, lights->clr), cosine_ang));
@@ -69,7 +69,7 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 	else
 	{
 		obj_norm = cylinder_norm(tmp->u.cylinder, intersection->origin);
-		cosine_ang = dot_prod(light_dir, obj_norm) / norm_vert(light_dir) * norm_vert(obj_norm);
+		cosine_ang = dot_prod(light_dir, obj_norm) / norm_vect(light_dir) * norm_vect(obj_norm);
 		final = colorscalar(tmp->u.cylinder.clr, 0.2);
 		if (shadowed == 0 && cosine_ang >= 0.0f && cosine_ang <= 1.0f)
 			final = coloradd(final, colorscalar(colormult(tmp->u.cylinder.clr, lights->clr), cosine_ang));
@@ -122,7 +122,7 @@ void	scene(t_rtv1 *rt)
 	t_ray		intersection;
 	int			index;
 
-	light.pos = (t_vert){-60, 30, -60};
+	light.pos = (t_vect){-60, 30, -60};
 	light.clr = (t_rgb){0xff, 0xff, 0xff};
 	pixel.y = -1;
 	while(++pixel.y < rt->w.height)
@@ -133,11 +133,11 @@ void	scene(t_rtv1 *rt)
 			this = pixel.y * rt->w.width + pixel.x;
 			setxy(rt, &dir, &pixel);
 			ray.origin = rt->cam.pos;
-			ray.dir = normalize(add_vert(rt->cam.dir, add_vert(mult_vert(rt->cam.right, dir.x - 0.5), mult_vert(rt->cam.down, dir.y - 0.5))));
+			ray.dir = normalize(add_vect(rt->cam.dir, add_vect(mult_vect(rt->cam.right, dir.x - 0.5), mult_vect(rt->cam.down, dir.y - 0.5))));
 			intersects = findintersects(ray, rt);
 			if ((index = winningobject(intersects, rt->nodes)) != -1)
 			{
-				intersection.origin = add_vert(ray.origin, mult_vert(ray.dir, intersects[index]));
+				intersection.origin = add_vect(ray.origin, mult_vect(ray.dir, intersects[index]));
 				intersection.dir = ray.dir;
 			}
 			putpixel(rt, pixel.x, pixel.y, color_at(&intersection, index, rt, &light));
