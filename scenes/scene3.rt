@@ -1,11 +1,11 @@
 scene {
 	camera {
-		origin(0, -1, -5);
+		origin(2, -1, -5);
 		direction(0, 0, 1);
 	}
 	plane {
 		origin(0, 0, -3);
-		color(100, 100, 100);
+		color(255, 255, 255);
 		distance(-1);
 	}
 	cone {

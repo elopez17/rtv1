@@ -44,7 +44,7 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 		obj_norm = sphere_norm(tmp->u.sphere, intersection->origin);
 		cosine_ang = dot_prod(light_dir, obj_norm);
 		final = colorscalar(tmp->u.sphere.clr, 0.2);
-		if (shadowed == 0)
+		if (shadowed == 0 && cosine_ang >= 0.0f && cosine_ang <= 1.0f)
 			final = coloradd(final, colorscalar(colormult(tmp->u.sphere.clr, lights->clr), cosine_ang));
 		return (final);
 	}
