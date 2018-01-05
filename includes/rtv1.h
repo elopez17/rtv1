@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/04 19:04:25 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/04 19:23:57 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ typedef union	u_union
 	t_plane		plane;
 	t_cone		cone;
 	t_cylinder	cylinder;
-	t_light		light;
 }				t_union;
 
 typedef struct	s_objects
