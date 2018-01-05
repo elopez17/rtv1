@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/04 17:06:11 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/04 18:19:17 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ t_vert		normalize(t_vert v);
 t_vert		invert(t_vert v);
 double		dot_prod(t_vert v1, t_vert v2);
 double		sqr_vert(t_vert v);
+double		len_vert(t_vert v);
 t_vert		cross_prod(t_vert v1, t_vert v2);
 t_vert		add_vert(t_vert v1, t_vert v2);
 t_vert		mult_vert(t_vert v, double scalar);

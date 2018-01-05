@@ -52,6 +52,7 @@ double	findintercylinder(t_ray ray, t_cylinder cylinder)
 	double	c;
 	double	d;
 	double	rslt[2];
+	t_ray	inter;
 
 	a = sqr_vert(diff_vert(ray.dir, mult_vert(cylinder.dir, 
 					dot_prod(ray.dir, cylinder.dir))));
@@ -66,6 +67,18 @@ cylinder.dir))));
 	{
 		rslt[0] = (-b - sqrt(d)) / (2 * a);
 		rslt[1] = (-b + sqrt(d)) / (2 * a);
+		inter.dir = ray.dir;
+		inter.origin = add_vert(ray.origin, mult_vert(ray.dir, rslt[0]));
+		if (cylinder.h - len_vert(diff_vert(diff_vert(inter.origin, cylinder.pos)
+, mult_vert(cylinder_norm(cylinder, inter.origin), cylinder.radius))) < 0)
+		{
+			inter.origin = add_vert(ray.origin, mult_vert(ray.dir, rslt[1]));
+			if (cylinder.h - len_vert(diff_vert(diff_vert(inter.origin, cylinder.pos)
+, mult_vert(cylinder_norm(cylinder, inter.origin), cylinder.radius))) < 0)
+			{
+				return (-1);
+			}
+		}
 		if (rslt[0] >= 0.00000001)
 			return (rslt[0]);
 		return ((rslt[1] >= 0.00000001) ? rslt[1] : -1);

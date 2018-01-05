@@ -14,3 +14,8 @@ double	sqr_vert(t_vert v)
 {
 	return (dot_prod(v, v));
 }
+
+double	len_vert(t_vert v)
+{
+	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
+}
