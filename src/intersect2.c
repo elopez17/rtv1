@@ -36,9 +36,39 @@ double	findintercone(t_ray ray, t_cone cone)
 	return (-1);
 }
 
+t_vert	cylinder_norm(t_cylinder cylinder, t_vert point)
+{
+	t_vert	normal;
+
+	normal = diff_vert(point, cylinder.pos);
+	normal = diff_vert(normal, mult_vert(cylinder.dir, dot_prod(cylinder.dir, normal)));
+	return (normalize(normal));
+}
+
 double	findintercylinder(t_ray ray, t_cylinder cylinder)
 {
-	if (ray.dir.x || cylinder.pos.x)
-		;
-	return (0);
+	double	a;
+	double	b;
+	double	c;
+	double	d;
+	double	rslt[2];
+
+	a = sqr_vert(diff_vert(ray.dir, mult_vert(cylinder.dir, 
+					dot_prod(ray.dir, cylinder.dir))));
+	b = 2 * dot_prod(diff_vert(ray.dir, mult_vert(cylinder.dir, 
+dot_prod(ray.dir, cylinder.dir))), diff_vert(diff_vert(ray.origin, cylinder.pos)
+, mult_vert(cylinder.dir, dot_prod(diff_vert(ray.origin, cylinder.pos), 
+cylinder.dir))));
+	c = sqr_vert(diff_vert(diff_vert(ray.origin, cylinder.pos), mult_vert(cylinder.dir, 
+		dot_prod(diff_vert(ray.origin, cylinder.pos), cylinder.dir)))) - cylinder.radius * cylinder.radius;
+	d = b * b - 4 * a * c;
+	if (d >= 0)
+	{
+		rslt[0] = (-b - sqrt(d)) / (2 * a);
+		rslt[1] = (-b + sqrt(d)) / (2 * a);
+		if (rslt[0] >= 0.00000001)
+			return (rslt[0]);
+		return ((rslt[1] >= 0.00000001) ? rslt[1] : -1);
+	}
+	return (-1);
 }

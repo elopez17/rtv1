@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/04 14:22:07 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/04 17:06:11 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ double		findintercone(t_ray ray, t_cone cone);
 double		findintercylinder(t_ray ray, t_cylinder cylinder);
 t_vert		sphere_norm(t_sphere sphere, t_vert point);
 t_vert		cone_norm(t_cone cone, t_vert point);
+t_vert		cylinder_norm(t_cylinder cylinder, t_vert point);
 void		scene(t_rtv1 *rt);
 double		brightness(t_rgb color);
 t_rgb		colorscalar(t_rgb color, double scalar);

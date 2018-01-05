@@ -68,7 +68,12 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 	}
 	else
 	{
-		return (tmp->u.cylinder.clr);
+		obj_norm = cylinder_norm(tmp->u.cylinder, intersection->origin);
+		cosine_ang = dot_prod(light_dir, obj_norm) / norm_vert(light_dir) * norm_vert(obj_norm);
+		final = colorscalar(tmp->u.cylinder.clr, 0.2);
+		if (shadowed == 0 && cosine_ang >= 0.0f && cosine_ang <= 1.0f)
+			final = coloradd(final, colorscalar(colormult(tmp->u.cylinder.clr, lights->clr), cosine_ang));
+		return (final);
 	}
 	return ((t_rgb){0, 0, 0});
 }

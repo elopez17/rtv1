@@ -82,10 +82,14 @@ t_union	getcylinder(t_rtv1 *rt)
 	{
 		if (ft_strstr(line, "origin"))
 			u.cylinder.pos = getxyz(line);
+		else if (ft_strstr(line, "direction"))
+			u.cylinder.dir = getxyz(line);
 		else if (ft_strstr(line, "color"))
 			u.cylinder.clr = getcolor(line);
 		else if (ft_strstr(line, "radius"))
 			u.cylinder.radius = ft_atod(ft_strchr(line, '(') + 1);
+		else if (ft_strstr(line, "height"))
+			u.cylinder.h = ft_atod(ft_strchr(line, '(') + 1);
 		else if (ft_strrchr(line, '}'))
 		{
 			ft_strdel(&line);
