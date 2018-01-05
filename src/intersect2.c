@@ -16,6 +16,7 @@ double	findintercone(t_ray ray, t_cone cone)
 	double	c;
 	double	d;
 	double	rslt[2];
+	t_ray	inter;
 
 	a = pow(cos(cone.a), 2) * sqr_vert(diff_vert(ray.dir, mult_vert(cone.dir, dot_prod(ray.dir, cone.dir)))) -
 		pow(sin(cone.a), 2) * dot_prod(ray.dir, cone.dir) * dot_prod(ray.dir, cone.dir);
@@ -29,6 +30,18 @@ double	findintercone(t_ray ray, t_cone cone)
 	{
 		rslt[0] = (-b - sqrt(d)) / (2 * a);
 		rslt[1] = (-b + sqrt(d)) / (2 * a);
+		inter.dir = ray.dir;
+		inter.origin = add_vert(ray.origin, mult_vert(ray.dir, rslt[0]));
+		if (cone.h - len_vert(diff_vert(diff_vert(inter.origin, cone.pos)
+, diff_vert(diff_vert(inter.origin, cone.pos), mult_vert(cone.dir,
+dot_prod(cone.dir, diff_vert(inter.origin, cone.pos)))))) < 0)
+		{
+			inter.origin = add_vert(ray.origin, mult_vert(ray.dir, rslt[1]));
+			if (cone.h - len_vert(diff_vert(diff_vert(inter.origin, cone.pos)
+, diff_vert(diff_vert(inter.origin, cone.pos), mult_vert(cone.dir,
+dot_prod(cone.dir, diff_vert(inter.origin, cone.pos)))))) < 0)
+				return (-1);
+		}
 		if (rslt[0] >= 0.00000001)
 			return (rslt[0]);
 		return ((rslt[1] >= 0.00000001) ? rslt[1] : -1);

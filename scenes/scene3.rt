@@ -13,6 +13,6 @@ scene {
 		direction(1, 0, 0);
 		color(0, 100, 0);
 		angle(10);
-		height(10);
+		height(2);
 	}
 }
