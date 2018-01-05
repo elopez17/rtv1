@@ -5,12 +5,12 @@ scene {
 	}
 	sphere {
 		origin(0, 0, 0);
-		color(0, 255, 0);
+		color(0, 50, 0);
 		radius(1);
 	}
 	plane {
 		origin(0, 1, 0);
-		color(177, 177, 177);
+		color(100, 100, 100);
 		distance(-1);
 	}
 }
