@@ -75,9 +75,7 @@ cylinder.dir))));
 			inter.origin = add_vert(ray.origin, mult_vert(ray.dir, rslt[1]));
 			if (cylinder.h - len_vert(diff_vert(diff_vert(inter.origin, cylinder.pos)
 , mult_vert(cylinder_norm(cylinder, inter.origin), cylinder.radius))) < 0)
-			{
 				return (-1);
-			}
 		}
 		if (rslt[0] >= 0.00000001)
 			return (rslt[0]);
