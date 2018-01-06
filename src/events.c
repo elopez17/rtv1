@@ -2,8 +2,7 @@
 
 int		expose_hook(t_rtv1 **rt)
 {
-	if (*rt)
-		;
+	render(*rt);
 	return (0);
 }
 

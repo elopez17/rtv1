@@ -122,7 +122,7 @@ void	scene(t_rtv1 *rt)
 	t_ray		intersection;
 	int			index;
 
-	light.pos = (t_vect){-60, 30, -60};
+	light.pos = (t_vect){60, -30, 60};
 	light.clr = (t_rgb){5, 5, 5};
 	pixel.y = -1;
 	while(++pixel.y < rt->w.height)

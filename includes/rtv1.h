@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/04 19:23:57 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/05 19:12:50 by elopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,15 @@ typedef struct	s_xy
 	double	x;
 	double	y;
 }				t_xy;
+
+typedef struct	s_quad
+{
+	double	a;
+	double	b;
+	double	c;
+	double	d;
+	double	rslt[2];
+}				t_quad;
 
 typedef struct	s_vector
 {

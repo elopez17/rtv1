@@ -17,10 +17,7 @@ double	findinterplane(t_ray ray, t_plane plane)
 
 t_vect	sphere_norm(t_sphere sphere, t_vect point)
 {
-	t_vect	normal;
-
-	normal = normalize(add_vect(point, invert(sphere.pos)));
-	return (normal);
+	return (normalize(add_vect(point, invert(sphere.pos))));
 }
 
 double	findintersphere(t_ray ray, t_sphere sphere)
