@@ -5,7 +5,7 @@ static double	norm_vect(t_vect v)
 	return (sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2)));
 }
 
-static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *lights)
+static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt)
 {
 	t_obj	*tmp;
 	t_vect	light_dir;
@@ -23,21 +23,18 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 		return ((t_rgb){0, 0, 0});
 	shadowed = 0;
 	shadow.origin = intersection->origin;
-	shadow.dir = normalize(add_vect(lights->pos, invert(intersection->origin)));
+	shadow.dir = normalize(add_vect(rt->light.pos, invert(intersection->origin)));
 	tmp = rt->obj;
-	light_dir = normalize(add_vect(lights->pos, invert(intersection->origin)));
+	light_dir = normalize(add_vect(rt->light.pos, invert(intersection->origin)));
 	while (--index >= 0)
 		tmp = tmp->next;
-	dist_to_light = add_vect(lights->pos, invert(intersection->origin));
+	dist_to_light = add_vect(rt->light.pos, invert(intersection->origin));
 	dist_to_light_mag = sqrt((dist_to_light.x * dist_to_light.x) + (dist_to_light.y * dist_to_light.y) + (dist_to_light.z * dist_to_light.z));
 	intersects = findintersects(shadow, rt);
 	i = -1;
 	while (++i < rt->nodes)
-		if (intersects[i] > 0.00000001 && intersects[i] <= dist_to_light_mag)
-		{
-			shadowed = 1;
+		if (intersects[i] > 0.00000001 && intersects[i] <= dist_to_light_mag && (shadowed = 1))
 			break ;
-		}
 	ft_memdel((void**)&intersects);
 	if (tmp->type == 1)
 	{
@@ -45,7 +42,7 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 		cosine_ang = dot_prod(light_dir, obj_norm);
 		final = colorscalar(tmp->u.sphere.clr, 0.2);
 		if (shadowed == 0 && cosine_ang >= 0.0f && cosine_ang <= 1.0f)
-			final = coloradd(final, colorscalar(colormult(tmp->u.sphere.clr, lights->clr), cosine_ang));
+			final = coloradd(final, colorscalar(colormult(tmp->u.sphere.clr, rt->light.clr), cosine_ang));
 		return (final);
 	}
 	else if (tmp->type == 2)
@@ -54,7 +51,7 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 		cosine_ang = dot_prod(light_dir, obj_norm);
 		final = colorscalar(tmp->u.plane.clr, 0.2);
 		if (shadowed == 0)
-			final = coloradd(final, colorscalar(colormult(tmp->u.plane.clr, lights->clr), cosine_ang));
+			final = coloradd(final, colorscalar(colormult(tmp->u.plane.clr, rt->light.clr), cosine_ang));
 		return (final);
 	}
 	else if (tmp->type == 3)
@@ -63,7 +60,7 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 		cosine_ang = dot_prod(light_dir, obj_norm) / norm_vect(light_dir) * norm_vect(obj_norm);
 		final = colorscalar(tmp->u.cone.clr, 0.2);
 		if (shadowed == 0 && cosine_ang >= 0.0f && cosine_ang <= 1.0f)
-			final = coloradd(final, colorscalar(colormult(tmp->u.cone.clr, lights->clr), cosine_ang));
+			final = coloradd(final, colorscalar(colormult(tmp->u.cone.clr, rt->light.clr), cosine_ang));
 		return (final);
 	}
 	else
@@ -72,7 +69,7 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt, t_light *light
 		cosine_ang = dot_prod(light_dir, obj_norm) / norm_vect(light_dir) * norm_vect(obj_norm);
 		final = colorscalar(tmp->u.cylinder.clr, 0.2);
 		if (shadowed == 0 && cosine_ang >= 0.0f && cosine_ang <= 1.0f)
-			final = coloradd(final, colorscalar(colormult(tmp->u.cylinder.clr, lights->clr), cosine_ang));
+			final = coloradd(final, colorscalar(colormult(tmp->u.cylinder.clr, rt->light.clr), cosine_ang));
 		return (final);
 	}
 	return ((t_rgb){0, 0, 0});
@@ -115,22 +112,17 @@ void	scene(t_rtv1 *rt)
 {
 	t_xy		pixel;
 	t_xy		dir;
-	int			this;
 	t_ray		ray;
-	t_light		light;
 	double		*intersects;
 	t_ray		intersection;
 	int			index;
 
-	light.pos = (t_vect){60, -30, 60};
-	light.clr = (t_rgb){5, 5, 5};
 	pixel.y = -1;
 	while(++pixel.y < rt->w.height)
 	{
 		pixel.x = -1;
 		while(++pixel.x < rt->w.width)
 		{
-			this = pixel.y * rt->w.width + pixel.x;
 			setxy(rt, &dir, &pixel);
 			ray.origin = rt->cam.pos;
 			ray.dir = normalize(add_vect(rt->cam.dir, add_vect(mult_vect(rt->cam.right, dir.x - 0.5), mult_vect(rt->cam.down, dir.y - 0.5))));
@@ -140,7 +132,7 @@ void	scene(t_rtv1 *rt)
 				intersection.origin = add_vect(ray.origin, mult_vect(ray.dir, intersects[index]));
 				intersection.dir = ray.dir;
 			}
-			putpixel(rt, pixel.x, pixel.y, color_at(&intersection, index, rt, &light));
+			putpixel(rt, pixel.x, pixel.y, color_at(&intersection, index, rt));
 			ft_memdel((void**)&intersects);
 		}
 	}
