@@ -1,6 +1,6 @@
 #include <rtv1.h>
 
-static double	norm_vect(t_vect v)
+double	norm_vect(t_vect v)
 {
 	return (sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2)));
 }
@@ -8,71 +8,29 @@ static double	norm_vect(t_vect v)
 static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt)
 {
 	t_obj	*tmp;
-	t_vect	light_dir;
 	t_vect	dist_to_light;
 	float	dist_to_light_mag;
 	double	*intersects;
-	t_vect	obj_norm;
-	double	cosine_ang;
 	t_ray	shadow;
-	int		shadowed;
-	int		i;
-	t_rgb	final;
 
 	if (index == -1)
 		return ((t_rgb){0, 0, 0});
-	shadowed = 0;
 	shadow.origin = intersection->origin;
 	shadow.dir = normalize(add_vect(rt->light.pos, invert(intersection->origin)));
 	tmp = rt->obj;
-	light_dir = normalize(add_vect(rt->light.pos, invert(intersection->origin)));
 	while (--index >= 0)
 		tmp = tmp->next;
 	dist_to_light = add_vect(rt->light.pos, invert(intersection->origin));
 	dist_to_light_mag = sqrt((dist_to_light.x * dist_to_light.x) + (dist_to_light.y * dist_to_light.y) + (dist_to_light.z * dist_to_light.z));
 	intersects = findintersects(shadow, rt);
-	i = -1;
-	while (++i < rt->nodes)
-		if (intersects[i] > 0.00000001 && intersects[i] <= dist_to_light_mag && (shadowed = 1))
-			break ;
+	while (++index < rt->nodes)
+		if (intersects[index] > 0.00000001 && intersects[index] <= dist_to_light_mag)
+		{
+			ft_memdel((void**)&intersects);
+			return (checklight(tmp, intersection, rt->light, 1));
+		}
 	ft_memdel((void**)&intersects);
-	if (tmp->type == 1)
-	{
-		obj_norm = sphere_norm(tmp->u.sphere, intersection->origin);
-		cosine_ang = dot_prod(light_dir, obj_norm);
-		final = colorscalar(tmp->u.sphere.clr, 0.2);
-		if (shadowed == 0 && cosine_ang >= 0.0f && cosine_ang <= 1.0f)
-			final = coloradd(final, colorscalar(colormult(tmp->u.sphere.clr, rt->light.clr), cosine_ang));
-		return (final);
-	}
-	else if (tmp->type == 2)
-	{
-		obj_norm = tmp->u.plane.norm;
-		cosine_ang = dot_prod(light_dir, obj_norm);
-		final = colorscalar(tmp->u.plane.clr, 0.2);
-		if (shadowed == 0)
-			final = coloradd(final, colorscalar(colormult(tmp->u.plane.clr, rt->light.clr), cosine_ang));
-		return (final);
-	}
-	else if (tmp->type == 3)
-	{
-		obj_norm = cone_norm(tmp->u.cone, intersection->origin);
-		cosine_ang = dot_prod(light_dir, obj_norm) / norm_vect(light_dir) * norm_vect(obj_norm);
-		final = colorscalar(tmp->u.cone.clr, 0.2);
-		if (shadowed == 0 && cosine_ang >= 0.0f && cosine_ang <= 1.0f)
-			final = coloradd(final, colorscalar(colormult(tmp->u.cone.clr, rt->light.clr), cosine_ang));
-		return (final);
-	}
-	else
-	{
-		obj_norm = cylinder_norm(tmp->u.cylinder, intersection->origin);
-		cosine_ang = dot_prod(light_dir, obj_norm) / norm_vect(light_dir) * norm_vect(obj_norm);
-		final = colorscalar(tmp->u.cylinder.clr, 0.2);
-		if (shadowed == 0 && cosine_ang >= 0.0f && cosine_ang <= 1.0f)
-			final = coloradd(final, colorscalar(colormult(tmp->u.cylinder.clr, rt->light.clr), cosine_ang));
-		return (final);
-	}
-	return ((t_rgb){0, 0, 0});
+	return (checklight(tmp, intersection, rt->light, 0));
 }
 
 static int	winningobject(double *intersects, int nodes)
@@ -102,16 +60,19 @@ static int	winningobject(double *intersects, int nodes)
 	return (-1);
 }
 
-static void	setxy(t_rtv1 *rt, t_xy *dir, t_xy *pixel)
+static void	setxy(t_rtv1 *rt, t_ray *ray, t_xy *pixel)
 {
-	dir->x = pixel->x / rt->w.width;
-	dir->y = (rt->w.height - pixel->y) / rt->w.height;
+	t_xy		dir;
+	
+	dir.x = pixel->x / rt->w.width;
+	dir.y = (rt->w.height - pixel->y) / rt->w.height;
+	ray->origin = rt->cam.pos;
+	ray->dir = normalize(add_vect(rt->cam.dir, add_vect(mult_vect(rt->cam.right, dir.x - 0.5), mult_vect(rt->cam.down, dir.y - 0.5))));
 }
 
 void	scene(t_rtv1 *rt)
 {
 	t_xy		pixel;
-	t_xy		dir;
 	t_ray		ray;
 	double		*intersects;
 	t_ray		intersection;
@@ -123,9 +84,7 @@ void	scene(t_rtv1 *rt)
 		pixel.x = -1;
 		while(++pixel.x < rt->w.width)
 		{
-			setxy(rt, &dir, &pixel);
-			ray.origin = rt->cam.pos;
-			ray.dir = normalize(add_vect(rt->cam.dir, add_vect(mult_vect(rt->cam.right, dir.x - 0.5), mult_vect(rt->cam.down, dir.y - 0.5))));
+			setxy(rt, &ray, &pixel);
 			intersects = findintersects(ray, rt);
 			if ((index = winningobject(intersects, rt->nodes)) != -1)
 			{

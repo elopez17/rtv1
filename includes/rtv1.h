@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/05 19:50:25 by elopez           ###   ########.fr       */
+/*   Updated: 2018/01/06 00:08:46 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ int			expose_hook(t_rtv1 **rt);
 t_vect		normalize(t_vect v);
 t_vect		invert(t_vect v);
 double		dot_prod(t_vect v1, t_vect v2);
+double		norm_vect(t_vect v);
 double		sqr_vect(t_vect v);
 double		len_vect(t_vect v);
 t_vect		cross_prod(t_vect v1, t_vect v2);
@@ -193,6 +194,8 @@ void		rtv1_error(int code);
 void		parsefile(t_rtv1 *rt);
 t_vect		getxyz(const char *line);
 t_rgb		getcolor(const char *line);
+t_rgb		checklight(t_obj *obj, t_ray *intersect, t_light light, int shadow);
+t_rgb		checklight2(t_obj *obj, t_ray *intersect, t_light light, int shadow);
 void		getcam(t_rtv1 *rt);
 t_union		getsphere(t_rtv1 *rt);
 t_union		getplane(t_rtv1 *rt);
