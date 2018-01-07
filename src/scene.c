@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   scene.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/01/06 18:47:13 by eLopez            #+#    #+#             */
+/*   Updated: 2018/01/06 18:50:08 by eLopez           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <rtv1.h>
 
 double	norm_vect(t_vect v)
@@ -16,11 +28,11 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt)
 	if (index == -1)
 		return ((t_rgb){0, 0, 0});
 	shadow.origin = intersection->origin;
-	shadow.dir = normalize(add_vect(rt->light.pos, invert(intersection->origin)));
+	shadow.dir = normalize(add_vect(rt->light, invert(intersection->origin)));
 	tmp = rt->obj;
 	while (--index >= 0)
 		tmp = tmp->next;
-	dist_to_light = add_vect(rt->light.pos, invert(intersection->origin));
+	dist_to_light = add_vect(rt->light, invert(intersection->origin));
 	dist_to_light_mag = sqrt((dist_to_light.x * dist_to_light.x) + (dist_to_light.y * dist_to_light.y) + (dist_to_light.z * dist_to_light.z));
 	intersects = findintersects(shadow, rt);
 	while (++index < rt->nodes)

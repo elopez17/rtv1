@@ -10,6 +10,8 @@ int		key_hook(int key, t_rtv1 **rt)
 {
 	if (key == KEYESC)
 	{
+		ft_lstdel((t_list**)&(*rt)->obj, NULL);
+		mlx_destroy_image((*rt)->mlx, (*rt)->img);
 		mlx_destroy_window((*rt)->mlx, (*rt)->win);
 		ft_memdel((void**)rt);
 		exit(0);

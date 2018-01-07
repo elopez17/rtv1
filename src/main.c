@@ -20,8 +20,7 @@ static void	init_rtv1(t_rtv1 **rt, char *file)
 	(*rt)->cam.right = (t_vect){0, 0, 0};
 	(*rt)->cam.down = (t_vect){0, 0, 0};
 	(*rt)->cam.look_at = (t_vect){0, 0, 0};
-	(*rt)->light.pos = (t_vect){60, -30, 60};
-	(*rt)->light.clr = (t_rgb){5, 5, 5};
+	(*rt)->light = (t_vect){60, -30, 60};
 	if (((*rt)->fd = open(file, O_RDONLY)) == -1)
 		rtv1_error(1);
 	parsefile(*rt);

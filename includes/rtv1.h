@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/06 00:08:46 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/06 18:32:42 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,6 @@ typedef struct	s_ray
 	t_vect	dir;
 }				t_ray;
 
-typedef struct	s_light
-{
-	t_vect	pos;
-	t_rgb	clr;
-}				t_light;
-
 typedef struct	s_sphere
 {
 	t_vect	pos;
@@ -157,7 +151,7 @@ typedef struct	s_rtv1
 	int		fd;
 	t_cam	cam;
 	t_obj	*obj;
-	t_light	light;
+	t_vect	light;
 	int		nodes;
 	double	asp_ratio;
 }				t_rtv1;
@@ -181,6 +175,7 @@ double		findinterplane(t_ray ray, t_plane plane);
 double		findintersphere(t_ray ray, t_sphere sphere);
 double		findintercone(t_ray ray, t_cone cone);
 double		findintercylinder(t_ray ray, t_cylinder cylinder);
+double		pickinter(double inter0, double inter1);
 t_vect		sphere_norm(t_sphere sphere, t_vect point);
 t_vect		cone_norm(t_cone cone, t_vect point);
 t_vect		cylinder_norm(t_cylinder cylinder, t_vect point);
@@ -194,8 +189,8 @@ void		rtv1_error(int code);
 void		parsefile(t_rtv1 *rt);
 t_vect		getxyz(const char *line);
 t_rgb		getcolor(const char *line);
-t_rgb		checklight(t_obj *obj, t_ray *intersect, t_light light, int shadow);
-t_rgb		checklight2(t_obj *obj, t_ray *intersect, t_light light, int shadow);
+t_rgb		checklight(t_obj *obj, t_ray *intersect, t_vect light, int shadow);
+t_rgb		checklight2(t_obj *obj, t_ray *intersect, t_vect light, int shadow);
 void		getcam(t_rtv1 *rt);
 t_union		getsphere(t_rtv1 *rt);
 t_union		getplane(t_rtv1 *rt);

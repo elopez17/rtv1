@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   intersect.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/01/06 16:30:17 by eLopez            #+#    #+#             */
+/*   Updated: 2018/01/06 18:35:38 by eLopez           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <rtv1.h>
 
 double	findinterplane(t_ray ray, t_plane plane)
@@ -36,15 +48,11 @@ double	findintersphere(t_ray ray, t_sphere sphere)
 		pow(ray.origin.y - sphere.pos.y, 2) +
 		pow(ray.origin.z - sphere.pos.z, 2) - (sphere.radius * sphere.radius);
 	discriminant = b * b - 4 * a * c;
-	if (discriminant >= 0)
-	{
-		root[0] = ((-b - sqrt(discriminant)) / (2 * a));
-		root[1] = ((-b + sqrt(discriminant)) / (2 * a));
-		if (root[0] >= 0.00000001)
-			return (root[0]);
-		return ((root[1] >= 0.00000001) ? root[1] : -1);
-	}
-	return (-1);
+	if (discriminant < 0)
+		return (-1);
+	root[0] = ((-b - sqrt(discriminant)) / (2 * a));
+	root[1] = ((-b + sqrt(discriminant)) / (2 * a));
+	return (pickinter(root[0], root[1]));
 }
 
 double	*findintersects(t_ray ray, t_rtv1 *rt)
