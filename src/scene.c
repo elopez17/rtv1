@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 18:47:13 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/06 18:50:08 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/06 19:13:26 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ double	norm_vect(t_vect v)
 static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt)
 {
 	t_obj	*tmp;
-	t_vect	dist_to_light;
-	float	dist_to_light_mag;
+	t_vect	dist;
+	float	dist_mag;
 	double	*intersects;
 	t_ray	shadow;
 
@@ -32,11 +32,11 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt)
 	tmp = rt->obj;
 	while (--index >= 0)
 		tmp = tmp->next;
-	dist_to_light = add_vect(rt->light, invert(intersection->origin));
-	dist_to_light_mag = sqrt((dist_to_light.x * dist_to_light.x) + (dist_to_light.y * dist_to_light.y) + (dist_to_light.z * dist_to_light.z));
+	dist = add_vect(rt->light, invert(intersection->origin));
+	dist_mag = sqrt((dist.x * dist.x) + (dist.y * dist.y) + (dist.z * dist.z));
 	intersects = findintersects(shadow, rt);
 	while (++index < rt->nodes)
-		if (intersects[index] > 0.00000001 && intersects[index] <= dist_to_light_mag)
+		if (intersects[index] > 0.00000001 && intersects[index] <= dist_mag)
 		{
 			ft_memdel((void**)&intersects);
 			return (checklight(tmp, intersection, rt->light, 1));
@@ -59,17 +59,15 @@ static int	winningobject(double *intersects, int nodes)
 	while (++i < nodes)
 		if (intersects[i] > max)
 			max = intersects[i];
-	if (max >= 0.00000001)
-	{
-		while (--i >= 0)
-			if (intersects[i] >= 0.00000001 && intersects[i] <= max)
-			{
-				max = intersects[i];
-				index = i;
-			}
-		return (index);
-	}
-	return (-1);
+	if (max < 0.00000001)
+		return (-1);
+	while (--i >= 0)
+		if (intersects[i] >= 0.00000001 && intersects[i] <= max)
+		{
+			max = intersects[i];
+			index = i;
+		}
+	return (index);
 }
 
 static void	setxy(t_rtv1 *rt, t_ray *ray, t_xy *pixel)
@@ -100,7 +98,8 @@ void	scene(t_rtv1 *rt)
 			intersects = findintersects(ray, rt);
 			if ((index = winningobject(intersects, rt->nodes)) != -1)
 			{
-				intersection.origin = add_vect(ray.origin, mult_vect(ray.dir, intersects[index]));
+				intersection.origin = add_vect(ray.origin, mult_vect(ray.dir,
+							intersects[index]));
 				intersection.dir = ray.dir;
 			}
 			putpixel(rt, pixel.x, pixel.y, color_at(&intersection, index, rt));

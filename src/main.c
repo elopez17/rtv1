@@ -1,5 +1,4 @@
 #include <rtv1.h>
-#include <pthread.h>
 
 static void	init_rtv1(t_rtv1 **rt, char *file)
 {

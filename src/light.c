@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 17:36:04 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/06 18:14:30 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/06 19:04:25 by eLopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,22 @@ t_rgb	checklight2(t_obj *obj, t_ray *intersect, t_vect light, int shadow)
 	if (obj->type == 3)
 	{
 		obj_norm = cone_norm(obj->u.cone, intersect->origin);
-		cos_a = dot_prod(light_dir, obj_norm) / norm_vect(light_dir) * norm_vect(obj_norm);
+		cos_a = dot_prod(light_dir, obj_norm) /
+			norm_vect(light_dir) * norm_vect(obj_norm);
 		final = colorscalar(obj->u.cone.clr, 0.2);
 		if (shadow == 0 && cos_a >= 0.0f && cos_a <= 1.0f)
 			final = coloradd(final, colorscalar(obj->u.cone.clr, cos_a));
-		return (final);
 	}
 	else
 	{
 		obj_norm = cylinder_norm(obj->u.cylinder, intersect->origin);
-		cos_a = dot_prod(light_dir, obj_norm) / norm_vect(light_dir) * norm_vect(obj_norm);
+		cos_a = dot_prod(light_dir, obj_norm) /
+			norm_vect(light_dir) * norm_vect(obj_norm);
 		final = colorscalar(obj->u.cylinder.clr, 0.2);
 		if (shadow == 0 && cos_a >= 0.0f && cos_a <= 1.0f)
 			final = coloradd(final, colorscalar(obj->u.cylinder.clr, cos_a));
-		return (final);
 	}
+	return (final);
 }
 
 t_rgb	checklight(t_obj *obj, t_ray *intersect, t_vect light, int shadow)
