@@ -6,30 +6,38 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 16:30:17 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/06 18:35:38 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/08 15:04:08 by elopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <rtv1.h>
+
+double	pickinter(double inter0, double inter1)
+{
+	if (inter0 >= 0.00000001)
+		return (inter0);
+	return ((inter1 >= 0.00000001) ? inter1 : -1);
+}
 
 double	findinterplane(t_ray ray, t_plane plane)
 {
 	double	a;
 	double	b;
 
-	a = dot_prod(ray.dir, plane.norm);
+	a = vdot(ray.dir, plane.norm);
 	if (a == 0)
 		return (-1);
 	else
 	{
-		b = dot_prod(plane.norm, add_vect(ray.origin, invert(mult_vect(plane.norm, plane.dist))));
+		b = vdot(plane.norm, vadd(ray.origin,
+					invert(vmult(plane.norm, plane.dist))));
 		return (-b / a);
 	}
 }
 
 t_vect	sphere_norm(t_sphere sphere, t_vect point)
 {
-	return (normalize(add_vect(point, invert(sphere.pos))));
+	return (normalize(vadd(point, invert(sphere.pos))));
 }
 
 double	findintersphere(t_ray ray, t_sphere sphere)

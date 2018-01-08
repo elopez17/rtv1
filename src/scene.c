@@ -6,13 +6,13 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 18:47:13 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/06 19:13:26 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/08 14:17:44 by elopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <rtv1.h>
 
-double	norm_vect(t_vect v)
+double			norm_vect(t_vect v)
 {
 	return (sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2)));
 }
@@ -28,11 +28,11 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt)
 	if (index == -1)
 		return ((t_rgb){0, 0, 0});
 	shadow.origin = intersection->origin;
-	shadow.dir = normalize(add_vect(rt->light, invert(intersection->origin)));
+	shadow.dir = normalize(vadd(rt->light, invert(intersection->origin)));
 	tmp = rt->obj;
 	while (--index >= 0)
 		tmp = tmp->next;
-	dist = add_vect(rt->light, invert(intersection->origin));
+	dist = vadd(rt->light, invert(intersection->origin));
 	dist_mag = sqrt((dist.x * dist.x) + (dist.y * dist.y) + (dist.z * dist.z));
 	intersects = findintersects(shadow, rt);
 	while (++index < rt->nodes)
@@ -45,7 +45,7 @@ static t_rgb	color_at(t_ray *intersection, int index, t_rtv1 *rt)
 	return (checklight(tmp, intersection, rt->light, 0));
 }
 
-static int	winningobject(double *intersects, int nodes)
+static int		winningobject(double *intersects, int nodes)
 {
 	double	max;
 	int		i;
@@ -70,17 +70,18 @@ static int	winningobject(double *intersects, int nodes)
 	return (index);
 }
 
-static void	setxy(t_rtv1 *rt, t_ray *ray, t_xy *pixel)
+static void		setxy(t_rtv1 *rt, t_ray *ray, t_xy *pixel)
 {
 	t_xy		dir;
-	
+
 	dir.x = pixel->x / rt->w.width;
 	dir.y = (rt->w.height - pixel->y) / rt->w.height;
 	ray->origin = rt->cam.pos;
-	ray->dir = normalize(add_vect(rt->cam.dir, add_vect(mult_vect(rt->cam.right, dir.x - 0.5), mult_vect(rt->cam.down, dir.y - 0.5))));
+	ray->dir = normalize(vadd(rt->cam.dir, vadd(vmult(rt->cam.right,
+					dir.x - 0.5), vmult(rt->cam.down, dir.y - 0.5))));
 }
 
-void	scene(t_rtv1 *rt)
+void			scene(t_rtv1 *rt)
 {
 	t_xy		pixel;
 	t_ray		ray;
@@ -89,16 +90,16 @@ void	scene(t_rtv1 *rt)
 	int			index;
 
 	pixel.y = -1;
-	while(++pixel.y < rt->w.height)
+	while (++pixel.y < rt->w.height)
 	{
 		pixel.x = -1;
-		while(++pixel.x < rt->w.width)
+		while (++pixel.x < rt->w.width)
 		{
 			setxy(rt, &ray, &pixel);
 			intersects = findintersects(ray, rt);
 			if ((index = winningobject(intersects, rt->nodes)) != -1)
 			{
-				intersection.origin = add_vect(ray.origin, mult_vect(ray.dir,
+				intersection.origin = vadd(ray.origin, vmult(ray.dir,
 							intersects[index]));
 				intersection.dir = ray.dir;
 			}

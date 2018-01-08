@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/06 18:32:42 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/08 13:51:50 by elopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,14 +163,14 @@ int			close_hook(t_rtv1 **rt);
 int			expose_hook(t_rtv1 **rt);
 t_vect		normalize(t_vect v);
 t_vect		invert(t_vect v);
-double		dot_prod(t_vect v1, t_vect v2);
+double		vdot(t_vect v1, t_vect v2);
 double		norm_vect(t_vect v);
-double		sqr_vect(t_vect v);
-double		len_vect(t_vect v);
-t_vect		cross_prod(t_vect v1, t_vect v2);
-t_vect		add_vect(t_vect v1, t_vect v2);
-t_vect		mult_vect(t_vect v, double scalar);
-t_vect		diff_vect(t_vect v1, t_vect v2);
+double		vsqr(t_vect v);
+double		vlen(t_vect v);
+t_vect		vcross(t_vect v1, t_vect v2);
+t_vect		vadd(t_vect v1, t_vect v2);
+t_vect		vmult(t_vect v, double scalar);
+t_vect		vdiff(t_vect v1, t_vect v2);
 double		findinterplane(t_ray ray, t_plane plane);
 double		findintersphere(t_ray ray, t_sphere sphere);
 double		findintercone(t_ray ray, t_cone cone);

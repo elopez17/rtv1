@@ -46,11 +46,11 @@ void		getcam(t_rtv1 *rt)
 			rtv1_error(2);
 		ft_strdel(&line);
 	}
-	rt->cam.dir = diff_vect(rt->cam.pos, rt->cam.look_at);
+	rt->cam.dir = vdiff(rt->cam.pos, rt->cam.look_at);
 	rt->cam.dir = normalize(invert(rt->cam.dir));
-	rt->cam.right = cross_prod((t_vect){0, 1, 0}, rt->cam.dir);
+	rt->cam.right = vcross((t_vect){0, 1, 0}, rt->cam.dir);
 	rt->cam.right = normalize(rt->cam.right);
-	rt->cam.down = cross_prod(rt->cam.right, rt->cam.dir);
+	rt->cam.down = vcross(rt->cam.right, rt->cam.dir);
 }
 
 static int	non_object(t_rtv1 *rt, char **line)

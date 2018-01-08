@@ -6,7 +6,7 @@ static void	init_rtv1(t_rtv1 **rt, char *file)
 	(*rt)->mlx = mlx_init();
 	(*rt)->w.width = 800;
 	(*rt)->w.height = 800;
-	(*rt)->asp_ratio = (double)(*rt)->w.width /(double)(*rt)->w.height;
+	(*rt)->asp_ratio = (double)(*rt)->w.width / (double)(*rt)->w.height;
 	(*rt)->win = mlx_new_window((*rt)->mlx, (*rt)->w.width, (*rt)->w.height,
 										"elopez & oabdalha @ 42");
 	(*rt)->img = mlx_new_image((*rt)->mlx, (*rt)->w.width, (*rt)->w.height);
@@ -25,7 +25,7 @@ static void	init_rtv1(t_rtv1 **rt, char *file)
 	parsefile(*rt);
 }
 
-int	main(int argc, char *argv[])
+int			main(int argc, char *argv[])
 {
 	t_rtv1		*rt;
 
