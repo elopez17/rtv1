@@ -3,11 +3,6 @@ scene {
 		origin(10, -3, 4);
 		direction(0, 0, 0);
 	}
-	plane {
-		origin(0, 0, 0);
-		color(255, 255, 255);
-		distance(.9);
-	}
 	cone {
 		origin(0, 0, 0);
 		direction(0, 3, 0);
