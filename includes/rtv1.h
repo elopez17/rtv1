@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/09 12:33:12 by elopez           ###   ########.fr       */
+/*   Updated: 2018/01/09 12:44:54 by elopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ typedef struct	s_sphere
 typedef struct	s_plane
 {
 	t_vect	norm;
-	double dist;
+	double	dist;
 	t_rgb	clr;
 }				t_plane;
 
@@ -155,48 +155,49 @@ typedef struct	s_rtv1
 	int		nodes;
 }				t_rtv1;
 
-void		render(t_rtv1 *rt);
-void		putpixel(t_rtv1 *rt, int x, int y, t_rgb color);
-int			key_hook(int key, t_rtv1 **rt);
-int			close_hook(t_rtv1 **rt);
-int			expose_hook(t_rtv1 **rt);
-t_vect		normalize(t_vect v);
-t_vect		invert(t_vect v);
-double		vdot(t_vect v1, t_vect v2);
-double		norm_vect(t_vect v);
-double		vsqr(t_vect v);
-double		vlen(t_vect v);
-t_vect		vcross(t_vect v1, t_vect v2);
-t_vect		vadd(t_vect v1, t_vect v2);
-t_vect		vmult(t_vect v, double scalar);
-t_vect		vdiff(t_vect v1, t_vect v2);
-double		findinterplane(t_ray ray, t_plane plane);
-double		findintersphere(t_ray ray, t_sphere sphere);
-double		findintercone(t_ray ray, t_cone cone);
-double		findintercylinder(t_ray ray, t_cylinder cylinder);
-double		pickinter(double inter0, double inter1);
-t_vect		sphere_norm(t_sphere sphere, t_vect point);
-t_vect		cone_norm(t_cone cone, t_vect point);
-t_vect		cylinder_norm(t_cylinder cylinder, t_vect point);
-void		scene(t_rtv1 *rt);
-double		brightness(t_rgb color);
-t_rgb		colorscalar(t_rgb color, double scalar);
-t_rgb		coloradd(t_rgb clr1, t_rgb clr2);
-t_rgb		colormult(t_rgb clr1, t_rgb clr2);
-t_rgb		coloravg(t_rgb clr1, t_rgb clr2);
-void		rtv1_error(int code);
-void		parsefile(t_rtv1 *rt);
-t_vect		getxyz(const char *line);
-t_rgb		getcolor(const char *line);
-t_rgb		checklight(t_obj *obj, t_ray *intersect, t_vect light, int shadow);
-t_rgb		checklight2(t_obj *obj, t_ray *intersect, t_vect light, int shadow);
-void		getcam(t_rtv1 *rt);
-t_union		getsphere(t_rtv1 *rt);
-t_union		getplane(t_rtv1 *rt);
-t_union		getcone(t_rtv1 *rt);
-t_union		getcylinder(t_rtv1 *rt);
-t_obj		getobject(int type, t_union u);
-double		*findintersects(t_ray ray, t_rtv1 *rt);
-
+void			render(t_rtv1 *rt);
+void			putpixel(t_rtv1 *rt, int x, int y, t_rgb color);
+int				key_hook(int key, t_rtv1 **rt);
+int				close_hook(t_rtv1 **rt);
+int				expose_hook(t_rtv1 **rt);
+t_vect			normalize(t_vect v);
+t_vect			invert(t_vect v);
+double			vdot(t_vect v1, t_vect v2);
+double			norm_vect(t_vect v);
+double			vsqr(t_vect v);
+double			vlen(t_vect v);
+t_vect			vcross(t_vect v1, t_vect v2);
+t_vect			vadd(t_vect v1, t_vect v2);
+t_vect			vmult(t_vect v, double scalar);
+t_vect			vdiff(t_vect v1, t_vect v2);
+double			findinterplane(t_ray ray, t_plane plane);
+double			findintersphere(t_ray ray, t_sphere sphere);
+double			findintercone(t_ray ray, t_cone cone);
+double			findintercylinder(t_ray ray, t_cylinder cylinder);
+double			pickinter(double inter0, double inter1);
+t_vect			sphere_norm(t_sphere sphere, t_vect point);
+t_vect			cone_norm(t_cone cone, t_vect point);
+t_vect			cylinder_norm(t_cylinder cylinder, t_vect point);
+void			scene(t_rtv1 *rt);
+double			brightness(t_rgb color);
+t_rgb			colorscalar(t_rgb color, double scalar);
+t_rgb			coloradd(t_rgb clr1, t_rgb clr2);
+t_rgb			colormult(t_rgb clr1, t_rgb clr2);
+t_rgb			coloravg(t_rgb clr1, t_rgb clr2);
+void			rtv1_error(int code);
+void			parsefile(t_rtv1 *rt);
+t_vect			getxyz(const char *line);
+t_rgb			getcolor(const char *line);
+t_rgb			checklight(t_obj *obj, t_ray *intersect, t_vect light,
+		int shadow);
+t_rgb			checklight2(t_obj *obj, t_ray *intersect, t_vect light,
+		int shadow);
+void			getcam(t_rtv1 *rt);
+t_union			getsphere(t_rtv1 *rt);
+t_union			getplane(t_rtv1 *rt);
+t_union			getcone(t_rtv1 *rt);
+t_union			getcylinder(t_rtv1 *rt);
+t_obj			getobject(int type, t_union u);
+double			*findintersects(t_ray ray, t_rtv1 *rt);
 
 #endif

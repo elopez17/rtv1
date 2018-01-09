@@ -6,7 +6,7 @@
 /*   By: elopez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 23:26:33 by elopez            #+#    #+#             */
-/*   Updated: 2017/12/18 12:28:45 by eLopez           ###   ########.fr       */
+/*   Updated: 2018/01/09 12:41:13 by elopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int				ft_isprint(int c);
 int				ft_toupper(int c);
 int				ft_tolower(int c);
 int				ft_atoi(const char *str);
-float   		ft_atof(const char *s);
+float			ft_atof(const char *s);
 double			ft_atod(const char *s);
 int				ft_strcmp(const char *s1, const char *s2);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
