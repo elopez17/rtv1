@@ -1,6 +1,6 @@
 scene {
 	camera {
-		origin(10, -4, 4);
+		origin(10, -3, 4);
 		direction(0, 0, 0);
 	}
 	plane {
