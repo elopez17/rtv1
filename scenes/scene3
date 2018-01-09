@@ -1,18 +1,18 @@
 scene {
 	camera {
-		origin(2, -1, -5);
+		origin(10, -4, 4);
 		direction(0, 0, 0);
 	}
 	plane {
-		origin(0, 0, -1);
-		color(90, 90, 90);
-		distance(-1);
+		origin(0, 0, 0);
+		color(255, 255, 255);
+		distance(.9);
 	}
 	cone {
 		origin(0, 0, 0);
-		direction(1, 0, 0);
-		color(0, 50, 0);
+		direction(0, 3, 0);
+		color(0, 0, 190);
 		angle(20);
-		height(2);
+		height(3);
 	}
 }
