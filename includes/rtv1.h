@@ -6,7 +6,7 @@
 /*   By: eLopez <elopez@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/21 00:06:40 by eLopez            #+#    #+#             */
-/*   Updated: 2018/01/08 13:51:50 by elopez           ###   ########.fr       */
+/*   Updated: 2018/01/09 12:33:12 by elopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,6 @@ typedef struct	s_rtv1
 	t_obj	*obj;
 	t_vect	light;
 	int		nodes;
-	double	asp_ratio;
 }				t_rtv1;
 
 void		render(t_rtv1 *rt);

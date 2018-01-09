@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oabdalha <oabdalha@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/27 13:32:37 by elopez            #+#    #+#             */
-/*   Updated: 2017/01/08 13:37:50 by oabdalha         ###   ########.fr       */
+/*   Created: 2017/11/27 13:32:37 by oabdalha          #+#    #+#             */
+/*   Updated: 2018/01/09 12:11:29 by elopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void	init_rtv1(t_rtv1 **rt, char *file)
 	(*rt)->mlx = mlx_init();
 	(*rt)->w.width = 800;
 	(*rt)->w.height = 800;
-	(*rt)->asp_ratio = (double)(*rt)->w.width / (double)(*rt)->w.height;
 	(*rt)->win = mlx_new_window((*rt)->mlx, (*rt)->w.width, (*rt)->w.height,
 										"elopez & oabdalha @ 42");
 	(*rt)->img = mlx_new_image((*rt)->mlx, (*rt)->w.width, (*rt)->w.height);

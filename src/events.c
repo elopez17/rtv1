@@ -6,7 +6,7 @@
 /*   By: oabdalha <oabdalha@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/27 13:32:37 by elopez            #+#    #+#             */
-/*   Updated: 2017/01/08 13:37:50 by oabdalha         ###   ########.fr       */
+/*   Updated: 2018/01/09 09:55:33 by elopez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int		key_hook(int key, t_rtv1 **rt)
 {
 	if (key == KEYESC)
 	{
-		ft_lstdel((t_list**)&(*rt)->obj, NULL);
 		mlx_destroy_image((*rt)->mlx, (*rt)->img);
 		mlx_destroy_window((*rt)->mlx, (*rt)->win);
 		ft_memdel((void**)rt);
